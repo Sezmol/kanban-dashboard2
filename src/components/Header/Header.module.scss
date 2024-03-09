@@ -1,0 +1,26 @@
+@import "../../styles/variables.scss";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4.5rem;
+  background-color: white;
+  border-left: 1px solid $secondary-color;
+  padding: 1.188rem 2.75rem 1.188rem 1.5rem;
+
+  .search {
+    width: 11.5rem;
+    background-color: $secondary-color;
+  }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .name {
+    margin: 0 !important;
+  }
+}

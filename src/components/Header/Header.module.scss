@@ -7,11 +7,18 @@
   height: 4.5rem;
   background-color: white;
   border-left: 1px solid $secondary-color;
-  padding: 1.188rem 2.75rem 1.188rem 1.5rem;
+  padding: 1.125rem 2.75rem 1.125rem 1.5rem;
 
   .search {
     width: 11.5rem;
+    padding-top: 0.313rem;
+    padding-bottom: 0.313rem;
+    border: none;
     background-color: $secondary-color;
+  }
+
+  .user {
+    height: 2rem;
   }
 
   .avatar {

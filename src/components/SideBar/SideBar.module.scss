@@ -1,0 +1,18 @@
+@import "../../styles/variables.scss";
+
+.sidebar {
+  width: 13rem !important;
+  padding: 1rem 0.75rem 2.5rem 0.75rem;
+
+  .menu {
+    border-right: none !important;
+
+    .projectItem {
+      padding: 0.5rem !important;
+    }
+
+    .ant-menu-item-selected {
+      background-color: $secondary-color !important;
+    }
+  }
+}

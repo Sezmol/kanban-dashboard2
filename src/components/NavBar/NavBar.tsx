@@ -68,7 +68,7 @@ const NavBar = () => {
   const [selectedKey, setSelectedKey] = useState("2");
 
   return (
-    <Sider width='4rem' theme='light' className={styles.sider}>
+    <Sider width='4rem' theme='light' className={styles.navbar}>
       <Flex
         className={styles.sider_container}
         gap='3rem'

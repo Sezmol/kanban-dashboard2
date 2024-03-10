@@ -1,9 +1,9 @@
 @import "../../styles/variables.scss";
 
-.sider {
+.navbar {
   background-color: #fff;
   height: 100vh;
-  width: 4rem;
+  width: 4rem !important;
   padding: 1rem 0.5rem;
 
   border-right: 2px solid $secondary-color;

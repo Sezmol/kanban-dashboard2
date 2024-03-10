@@ -21,7 +21,12 @@ const Header = () => {
       <Flex gap={"1rem"} align='center'>
         <EmailIcon />
         <BellIcon />
-        <Flex gap={"0.5rem"} justify='center' align='center'>
+        <Flex
+          className={styles.user}
+          gap={"0.5rem"}
+          justify='center'
+          align='center'
+        >
           <Avatar className={styles.avatar} icon={<AvatarIcon />} />
           <Flex vertical>
             <Title className={styles.name} level={5}>

@@ -1,9 +1,10 @@
 import { Layout, Breadcrumb, Row, Col, Tabs } from "antd";
 
 import NavBar from "./components/NavBar/NavBar";
+import Header from "./components/Header/Header";
+import SideBar from "./components/SideBar/SideBar";
 
 import styles from "./App.module.scss";
-import Header from "./components/Header/Header";
 
 const { Content } = Layout;
 const { TabPane } = Tabs;
@@ -11,7 +12,7 @@ const { TabPane } = Tabs;
 const App = () => (
   <Layout className={styles.app}>
     <NavBar />
-    <Layout.Sider></Layout.Sider>
+    <SideBar />
     <Layout>
       <Header />
       <Content style={{ margin: "0 16px" }}>

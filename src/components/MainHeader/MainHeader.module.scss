@@ -1,0 +1,54 @@
+@import "../../styles/variables.scss";
+
+.mainHeader {
+  background-color: $main-background-color;
+  border-left: 2px solid $main-border-color;
+  padding: 1.5rem 2.75rem 1rem 1.5rem;
+
+  .progress {
+    color: $main-label-text-color !important;
+    :global {
+      .ant-progress-text {
+        color: $main-label-text-color !important;
+      }
+
+      .ant-progress-text::after {
+        content: " complete";
+      }
+    }
+    // :global {
+    //   .ant-progress-bg {
+    //     background-color: $main-active-color !important;
+    //   }
+    // }
+  }
+
+  .addButton {
+    background-color: $main-active-color !important;
+  }
+
+  .addButton:hover {
+    background-color: $secondary-main-color !important;
+  }
+
+  .tabs {
+    background-color: $main-border-color !important;
+    :global {
+      .ant-tabs-tab-active {
+        font-weight: 500 !important;
+        outline-color: black !important;
+      }
+      .ant-tabs-tab-btn {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+
+        color: rgba(0, 0, 0, 0.88) !important;
+      }
+    }
+
+    .tabItem {
+      background-color: $main-border-color !important;
+    }
+  }
+}

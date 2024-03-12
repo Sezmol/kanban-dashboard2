@@ -1,0 +1,28 @@
+@import "../../../styles/variables.scss";
+
+.section {
+  background-color: $main-border-color;
+  width: 15.5rem !important;
+  padding: 0 !important;
+
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .taskCount {
+    width: 2rem;
+    height: 1.25rem;
+    margin-left: 1rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    background-color: $main-background-color;
+  }
+
+  .menuIcon {
+    cursor: pointer;
+    margin-right: 0.5rem;
+  }
+}

@@ -2,32 +2,29 @@ import Sider from "antd/es/layout/Sider";
 import Title from "antd/es/typography/Title";
 
 import styles from "./SideBar.module.scss";
-import { Avatar, Flex, Menu, Typography } from "antd";
+import { Avatar, Menu, Typography } from "antd";
+import { MenuItemType } from "antd/es/menu/hooks/useItems";
 
-const projectsList = [
+const projectsList: MenuItemType[] = [
   {
     key: "1",
     title: "Building enterprise",
-    emoji: "🏙️",
-    backgroundColor: "#DBEEFF",
+    icon: "../../assets/emoji/city.png",
   },
   {
     key: "2",
     title: "Web platform",
-    emoji: "🌐",
-    backgroundColor: "#EDF6FA",
+    icon: "🌐",
   },
   {
     key: "3",
     title: "Mac website",
-    emoji: "🍔",
-    backgroundColor: "#FCE1C6",
+    icon: "🍔",
   },
   {
     key: "4",
     title: "Cosmetic web app",
-    emoji: "🚀",
-    backgroundColor: "#F4D7F1 ",
+    icon: "🚀",
   },
 ];
 
@@ -43,14 +40,12 @@ const SideBar = () => {
       >
         {projectsList.map((project) => (
           <Menu.Item className={styles.projectItem} key={project.key}>
-            <Avatar
-              style={{ backgroundColor: project.backgroundColor }}
-              icon={project.emoji}
-            />
+            <Avatar className={styles.avatar} src={project.icon} />
             <Typography.Text>{project.title}</Typography.Text>
           </Menu.Item>
         ))}
       </Menu>
+      <Title level={5}>Analytics</Title>
     </Sider>
   );
 };

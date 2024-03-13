@@ -1,4 +1,3 @@
-import { Flex } from "antd";
 import { Content } from "antd/es/layout/layout";
 import Icons from "../MainHeader/Icons/Icons";
 import Tabs from "../MainHeader/Tabs/Tabs";

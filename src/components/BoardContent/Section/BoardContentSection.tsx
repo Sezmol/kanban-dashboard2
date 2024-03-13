@@ -1,16 +1,22 @@
-import { Button, Dropdown, Flex, MenuProps } from "antd";
+import { useState } from "react";
+import { Dropdown, Flex, MenuProps } from "antd";
 import Title from "antd/es/typography/Title";
 import MenuIcon from "../../../icons/MenuIcon";
 import Card from "../Card/Card";
-import { IBoardContentSectionCard } from "../../../types/BoardContent";
+import {
+  IBoardContentList,
+  IBoardContentSectionCard,
+} from "../../../types/BoardContent";
+import AddTaskButton from "../../AddTaskButton/AddTaskButton";
+import AddTaskForm from "../AddTaskForm/AddTaskForm";
 
 import styles from "./BoardContentSection.module.scss";
-import AddTaskButton from "../../AddTaskButton/AddTaskButton";
+import { useQuery } from "@apollo/client";
+import { GET_BOARD_CARDS } from "../../../graphql/boardCards/query";
 
-type BoardContentSectionProps = {
-  title: string;
-  sectionCards?: IBoardContentSectionCard[];
-};
+interface IBoardContentSectionCardData {
+  boardCards: IBoardContentSectionCard[];
+}
 
 const items: MenuProps["items"] = [
   {
@@ -19,35 +25,57 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const BoardContentSection = ({
-  title,
-  sectionCards = [],
-}: BoardContentSectionProps) => {
+const BoardContentSection = ({ title, emoji }: IBoardContentList) => {
+  const [isCardAdding, setIsCardAdding] = useState(false);
+  const { data, error, loading } = useQuery<IBoardContentSectionCardData>(
+    GET_BOARD_CARDS,
+    {
+      variables: { parentSection: title },
+    }
+  );
+
   return (
     <Flex vertical gap={"1rem"}>
       <Flex align='center' justify='space-between' className={styles.section}>
         <Title className={styles.title} level={5}>
-          {title}
+          {emoji} {title}
           <Flex align='center' justify='center' className={styles.taskCount}>
-            {sectionCards.length}
+            {data?.boardCards.length}
           </Flex>
         </Title>
         <Dropdown menu={{ items }}>
-          <MenuIcon className={styles.menuIcon} />
+          <Flex>
+            <MenuIcon className={styles.menuIcon} />
+          </Flex>
         </Dropdown>
       </Flex>
-      <Flex vertical gap={"0.5rem"}>
-        {sectionCards.map((card, index) => (
-          <Card
-            key={index}
-            title={card.title}
-            description={card.description}
-            avatar={card.avatar}
-            labels={card.labels}
+      <Flex style={{ width: "15.5rem" }} vertical gap={"0.5rem"}>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          data?.boardCards.map((card, index) => (
+            <Card
+              key={index}
+              title={card.title}
+              description={card.description}
+              avatars={card.avatars}
+              labels={card.labels}
+              parentSection={card.parentSection}
+            />
+          ))
+        )}
+        {isCardAdding && (
+          <AddTaskForm
+            parentSection={title}
+            handleCancel={() => setIsCardAdding(false)}
           />
-        ))}
+        )}
       </Flex>
-      {!title.includes("Done") && <AddTaskButton></AddTaskButton>}
+      {!title.includes("Done") && !isCardAdding && (
+        <AddTaskButton
+          onClick={() => setIsCardAdding((prev) => !prev)}
+        ></AddTaskButton>
+      )}
     </Flex>
   );
 };

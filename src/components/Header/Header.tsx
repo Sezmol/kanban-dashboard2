@@ -6,6 +6,7 @@ import BellIcon from "../../icons/BellIcon";
 import AvatarIcon from "../../icons/AvatarIcon";
 
 import styles from "./Header.module.scss";
+
 const { Header: HeaderLayout } = Layout;
 
 const { Text, Title } = Typography;

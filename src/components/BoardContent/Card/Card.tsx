@@ -1,30 +1,38 @@
-import { Avatar, Flex, Card as AntdCard } from "antd";
+import { Avatar, Flex, Card as AntdCard, Dropdown, MenuProps } from "antd";
 import Title from "antd/es/typography/Title";
 import Paragraph from "antd/es/typography/Paragraph";
 import MenuIcon from "../../../icons/MenuIcon";
-import AvatarIcon from "../../../icons/AvatarIcon";
-import { label } from "../../../types/BoardContent";
+import { IBoardContentSectionCard } from "../../../types/BoardContent";
 
 import styles from "./Card.module.scss";
+import { getLabelColor } from "../../../utils/helpers";
 
-type CardProps = {
-  title: string;
-  description: string;
-  avatar?: string;
-  labels: label[];
-};
+const items: MenuProps["items"] = [
+  {
+    label: "Delete Task",
+    key: "0",
+  },
+];
 
-const Card = ({ title, description, avatar, labels }: CardProps) => {
+const Card = ({
+  title,
+  description,
+  avatars,
+  labels,
+}: IBoardContentSectionCard) => {
   return (
     <AntdCard className={styles.card}>
       <Flex justify='space-between' align='center'>
         <Flex gap={"0.5rem"} align='center'>
           <Flex>
             <Avatar.Group size={20} maxCount={3}>
-              <Avatar
-                style={{ display: "flex", width: 20, height: 20 }}
-                icon={<AvatarIcon />}
-              />
+              {avatars?.map((avatar, index) => (
+                <Avatar
+                  style={{ display: "flex", width: 20, height: 20 }}
+                  src={avatar}
+                  key={index}
+                />
+              ))}
             </Avatar.Group>
           </Flex>
           <Title
@@ -42,21 +50,23 @@ const Card = ({ title, description, avatar, labels }: CardProps) => {
             {title}
           </Title>
         </Flex>
-        <Flex style={{ cursor: "pointer" }}>
-          <MenuIcon className={styles.menuIcon} />
-        </Flex>
+        <Dropdown menu={{ items }}>
+          <Flex style={{ cursor: "pointer" }}>
+            <MenuIcon className={styles.menuIcon} />
+          </Flex>
+        </Dropdown>
       </Flex>
       <Paragraph className={styles.desc}>{description}</Paragraph>
       <Flex style={{ marginTop: "auto" }} gap={7}>
-        {labels.map((label) => (
+        {labels.map((label, index) => (
           <Flex
             align='center'
             justify='center'
-            style={{ backgroundColor: label.bgColor, color: label.textColor }}
+            style={getLabelColor(label)}
             className={styles.label}
-            key={label.title}
+            key={index}
           >
-            {label.title}
+            {label}
           </Flex>
         ))}
       </Flex>

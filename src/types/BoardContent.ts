@@ -2,20 +2,15 @@
 type labelBgColor = "#FBE4E1" | "#EDFAF6";
 type labelTextColor = "#EF887F" | "#60BF9D";
 
-export interface label {
-  title: string;
-  bgColor: labelBgColor;
-  textColor: labelTextColor;
-}
-
 export interface IBoardContentSectionCard {
   title: string;
   description: string;
-  avatar: string;
-  labels: label[];
+  parentSection: string;
+  avatars: string[];
+  labels: string[];
 }
 
 export interface IBoardContentList {
   title: string;
-  sectionCards?: IBoardContentSectionCard[];
+  emoji: string;
 }

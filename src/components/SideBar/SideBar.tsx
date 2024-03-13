@@ -4,6 +4,7 @@ import Title from "antd/es/typography/Title";
 import styles from "./SideBar.module.scss";
 import { Avatar, Menu, Typography } from "antd";
 import { MenuItemType } from "antd/es/menu/hooks/useItems";
+import Analytics from "../Analytics/Analytics";
 
 const projectsList: MenuItemType[] = [
   {
@@ -45,7 +46,7 @@ const SideBar = () => {
           </Menu.Item>
         ))}
       </Menu>
-      <Title level={5}>Analytics</Title>
+      <Analytics />
     </Sider>
   );
 };

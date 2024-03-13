@@ -3,6 +3,7 @@ import TabPane from "antd/es/tabs/TabPane";
 import BoardContentHeader from "../../BoardContent/Header/BoardContentHeader";
 
 import styles from "./Tabs.module.scss";
+import TableContent from "../../TableContent/TableContent";
 
 const tabList = [
   {
@@ -22,8 +23,8 @@ const tabList = [
   },
   {
     key: "4",
-    title: "Test",
-    content: "Test content",
+    title: "Table",
+    content: <TableContent />,
   },
 ];
 

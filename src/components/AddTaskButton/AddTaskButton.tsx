@@ -3,9 +3,13 @@ import PlusIcon from "../../icons/PlusIcon";
 
 import styles from "./AddTaskButton.module.scss";
 
-const AddTaskButton = () => {
+type AddTaskButtonProps = {
+  onClick: () => void;
+};
+
+const AddTaskButton = ({ onClick }: AddTaskButtonProps) => {
   return (
-    <Button className={styles.button}>
+    <Button onClick={onClick} className={styles.button}>
       <PlusIcon />
       Add Task
     </Button>

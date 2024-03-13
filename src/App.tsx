@@ -1,4 +1,4 @@
-import { Layout, Breadcrumb, Row, Col, Tabs } from "antd";
+import { Layout } from "antd";
 
 import NavBar from "./components/NavBar/NavBar";
 import Header from "./components/Header/Header";
@@ -7,8 +7,6 @@ import MainHeader from "./components/MainHeader/MainHeader";
 import MainContent from "./components/MainContent/MainContent";
 
 import styles from "./App.module.scss";
-const { Content } = Layout;
-const { TabPane } = Tabs;
 
 const App = () => (
   <Layout className={styles.app}>

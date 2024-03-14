@@ -1,0 +1,74 @@
+{
+  "table": [
+    {
+      "key": "1",
+      "name": "Alex",
+      "surname": "Brown",
+      "dateOfBirth": "2000-02-15",
+      "email": "john@gmail.com",
+      "age": 32,
+      "phone": "+1234567890",
+      "roles": ["manager", "admin"]
+    },
+    {
+      "key": "2",
+      "name": "Charlie",
+      "surname": "Green",
+      "dateOfBirth": "1980-01-20",
+      "email": "jim@gmail.com",
+      "phone": "+1234567890",
+      "age": 42,
+      "roles": ["user"]
+    },
+    {
+      "key": "3",
+      "name": "Bob",
+      "surname": "Black",
+      "dateOfBirth": "1990-03-10",
+      "email": "joe@gmail.com",
+      "phone": "+1234567890",
+      "age": 32,
+      "roles": ["user", "manager"]
+    },
+    {
+      "key": "4",
+      "name": "Charlie",
+      "surname": "Green",
+      "dateOfBirth": "1980-01-20",
+      "email": "jim@gmail.com",
+      "phone": "+1234567890",
+      "age": 42,
+      "roles": ["user"]
+    },
+    {
+      "key": "5",
+      "name": "Charlie",
+      "surname": "Green",
+      "dateOfBirth": "1980-01-20",
+      "email": "jim@gmail.com",
+      "phone": "+1234567890",
+      "age": 42,
+      "roles": ["user"]
+    },
+    {
+      "key": "6",
+      "name": "Charlie",
+      "surname": "Green",
+      "dateOfBirth": "1980-01-20",
+      "email": "jim@gmail.com",
+      "phone": "+1234567890",
+      "age": 42,
+      "roles": ["user"]
+    },
+    {
+      "key": "7",
+      "name": "Charlie",
+      "surname": "Green",
+      "dateOfBirth": "1980-01-20",
+      "email": "jim@gmail.com",
+      "phone": "+1234567890",
+      "age": 42,
+      "roles": ["user"]
+    }
+  ]
+}

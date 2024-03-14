@@ -3,6 +3,7 @@ type labelBgColor = "#FBE4E1" | "#EDFAF6";
 type labelTextColor = "#EF887F" | "#60BF9D";
 
 export interface IBoardContentSectionCard {
+  id: string;
   title: string;
   description: string;
   parentSection: string;

@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import PlusIcon from "../../icons/PlusIcon";
+import PlusIcon from "../../../icons/PlusIcon";
 
 import styles from "./AddTaskButton.module.scss";
 

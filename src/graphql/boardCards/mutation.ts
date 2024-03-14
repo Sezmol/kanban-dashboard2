@@ -21,3 +21,11 @@ export const ADD_BOARD_CARD = gql`
     }
   }
 `;
+
+export const DELETE_BOARD_CARD = gql`
+  mutation DeleteBoardCard($id: ID!) {
+    deleteBoardCard(where: { id: $id }) {
+      id
+    }
+  }
+`;

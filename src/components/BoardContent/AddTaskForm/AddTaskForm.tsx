@@ -33,7 +33,17 @@ const options: SelectProps["options"] = [
 ];
 
 const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
-  const [addTask, { data, loading, error }] = useMutation(ADD_BOARD_CARD);
+  const [addTask, { data, loading, error }] = useMutation(ADD_BOARD_CARD, {
+    update: (cache, { data: { newBoardCard } }) => {
+      cache.modify({
+        fields: {
+          boardCards(boardCardsRefs = []) {
+            return [...boardCardsRefs, newBoardCard];
+          },
+        },
+      });
+    },
+  });
 
   const onFinish = async (values: Inputs) => {
     const avatar =
@@ -44,7 +54,7 @@ const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
       description: values.description,
       parentSection: parentSection,
       avatars: [avatar],
-      labels: values.labels || "[]",
+      labels: values.labels || [],
     };
 
     try {
@@ -109,7 +119,7 @@ const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
           htmlType='submit'
           style={{ backgroundColor: "#6e6af0" }}
           type='primary'
-          disabled={loading}
+          loading={loading}
         >
           {loading ? "Loading..." : "Submit"}
         </Button>

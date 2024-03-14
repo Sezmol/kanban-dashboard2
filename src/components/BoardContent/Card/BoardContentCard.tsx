@@ -1,27 +1,56 @@
-import { Avatar, Flex, Card as AntdCard, Dropdown, MenuProps } from "antd";
+import { Avatar, Flex, Card, Dropdown, MenuProps, Button } from "antd";
 import Title from "antd/es/typography/Title";
 import Paragraph from "antd/es/typography/Paragraph";
 import MenuIcon from "../../../icons/MenuIcon";
 import { IBoardContentSectionCard } from "../../../types/BoardContent";
-
-import styles from "./Card.module.scss";
 import { getLabelColor } from "../../../utils/helpers";
+import { Reference, useMutation } from "@apollo/client";
+import { DELETE_BOARD_CARD } from "../../../graphql/boardCards/mutation";
 
-const items: MenuProps["items"] = [
-  {
-    label: "Delete Task",
-    key: "0",
-  },
-];
+import styles from "./BoardContentCard.module.scss";
 
-const Card = ({
+const BoardContentCard = ({
+  id,
   title,
   description,
   avatars,
   labels,
 }: IBoardContentSectionCard) => {
+  const [deleteTask, { data, loading, error }] = useMutation(
+    DELETE_BOARD_CARD,
+    {
+      update: (cache, { data: { deleteBoardCard } }) => {
+        cache.modify({
+          fields: {
+            boardCards(boardCardsRefs = []) {
+              return boardCardsRefs.filter(
+                (boardCardRef: Reference) =>
+                  boardCardRef.__ref !== `BoardCard:${deleteBoardCard.id}`
+              );
+            },
+          },
+        });
+      },
+    }
+  );
+
+  const items: MenuProps["items"] = [
+    {
+      label: (
+        <Button
+          type='text'
+          loading={loading}
+          onClick={() => deleteTask({ variables: { id } })}
+        >
+          {loading ? "Loading..." : "Delete Task"}
+        </Button>
+      ),
+      key: "0",
+    },
+  ];
+
   return (
-    <AntdCard className={styles.card}>
+    <Card className={styles.card}>
       <Flex justify='space-between' align='center'>
         <Flex gap={"0.5rem"} align='center'>
           <Flex>
@@ -36,14 +65,12 @@ const Card = ({
             </Avatar.Group>
           </Flex>
           <Title
+            ellipsis
             style={{
               maxWidth: "11.75rem",
               fontSize: 14,
               margin: 0,
               fontWeight: 500,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              textWrap: "nowrap",
             }}
             level={5}
           >
@@ -56,7 +83,9 @@ const Card = ({
           </Flex>
         </Dropdown>
       </Flex>
-      <Paragraph className={styles.desc}>{description}</Paragraph>
+      <Paragraph ellipsis={{ rows: 2 }} className={styles.desc}>
+        {description}
+      </Paragraph>
       <Flex style={{ marginTop: "auto" }} gap={7}>
         {labels.map((label, index) => (
           <Flex
@@ -70,8 +99,8 @@ const Card = ({
           </Flex>
         ))}
       </Flex>
-    </AntdCard>
+    </Card>
   );
 };
 
-export default Card;
+export default BoardContentCard;

@@ -1,6 +1,6 @@
 import { Flex } from "antd";
 
-import BoardContentSection from "../Section/BoardContentSection";
+import BoardContentColumn from "../Column/BoardContentColumn";
 import { IBoardContentList } from "../../../types/BoardContent";
 
 import styles from "./BoardContentHeader.module.scss";
@@ -99,7 +99,7 @@ const BoardContentHeader = () => {
   return (
     <Flex gap={"1.75rem"} className={styles.boardContent}>
       {boardContentList.map((boardContent) => (
-        <BoardContentSection
+        <BoardContentColumn
           key={boardContent.title}
           title={boardContent.title}
           emoji={boardContent.emoji}

@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { Dropdown, Flex, MenuProps } from "antd";
+import { Badge, Dropdown, Flex, MenuProps } from "antd";
 import Title from "antd/es/typography/Title";
+import { useQuery } from "@apollo/client";
+
 import MenuIcon from "../../../icons/MenuIcon";
-import Card from "../Card/Card";
+import BoardContentCard from "../Card/BoardContentCard";
 import {
   IBoardContentList,
   IBoardContentSectionCard,
 } from "../../../types/BoardContent";
-import AddTaskButton from "../../AddTaskButton/AddTaskButton";
+import AddTaskButton from "../AddTaskButton/AddTaskButton";
 import AddTaskForm from "../AddTaskForm/AddTaskForm";
-
-import styles from "./BoardContentSection.module.scss";
-import { useQuery } from "@apollo/client";
 import { GET_BOARD_CARDS } from "../../../graphql/boardCards/query";
+
+import styles from "./BoardContentColumn.module.scss";
 
 interface IBoardContentSectionCardData {
   boardCards: IBoardContentSectionCard[];
@@ -25,7 +26,7 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const BoardContentSection = ({ title, emoji }: IBoardContentList) => {
+const BoardContentColumn = ({ title, emoji }: IBoardContentList) => {
   const [isCardAdding, setIsCardAdding] = useState(false);
   const { data, error, loading } = useQuery<IBoardContentSectionCardData>(
     GET_BOARD_CARDS,
@@ -39,9 +40,16 @@ const BoardContentSection = ({ title, emoji }: IBoardContentList) => {
       <Flex align='center' justify='space-between' className={styles.section}>
         <Title className={styles.title} level={5}>
           {emoji} {title}
-          <Flex align='center' justify='center' className={styles.taskCount}>
-            {data?.boardCards.length}
-          </Flex>
+          <Badge
+            color='white'
+            style={{
+              color: "black",
+              fontSize: 10,
+              fontWeight: 500,
+              width: "2rem",
+            }}
+            count={data?.boardCards.length}
+          />
         </Title>
         <Dropdown menu={{ items }}>
           <Flex>
@@ -53,9 +61,10 @@ const BoardContentSection = ({ title, emoji }: IBoardContentList) => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          data?.boardCards.map((card, index) => (
-            <Card
-              key={index}
+          data?.boardCards.map((card) => (
+            <BoardContentCard
+              id={card.id}
+              key={card.id}
               title={card.title}
               description={card.description}
               avatars={card.avatars}
@@ -80,4 +89,4 @@ const BoardContentSection = ({ title, emoji }: IBoardContentList) => {
   );
 };
 
-export default BoardContentSection;
+export default BoardContentColumn;

@@ -1,11 +1,20 @@
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { Button, Card, Form, Input, Select, SelectProps } from "antd";
-import { ADD_BOARD_CARD } from "../../../graphql/boardCards/mutation";
+import {
+  ADD_BOARD_CARD,
+  PUBLISH_BOARD_CARD,
+} from "../../../graphql/boardCards/mutation";
+import { GET_ALL_BOARD_CARDS } from "../../../graphql/boardCards/query";
+import { IBoardContentSectionCard } from "../../../types/BoardContent";
 
 type Inputs = {
   title: string;
   description: string;
   labels: string[];
+};
+
+type GetBoardCardsResponse = {
+  boardCards: IBoardContentSectionCard[];
 };
 
 interface IAddTaskFormProps {
@@ -33,17 +42,44 @@ const options: SelectProps["options"] = [
 ];
 
 const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
-  const [addTask, { data, loading, error }] = useMutation(ADD_BOARD_CARD, {
-    update: (cache, { data: { newBoardCard } }) => {
-      cache.modify({
-        fields: {
-          boardCards(boardCardsRefs = []) {
-            return [...boardCardsRefs, newBoardCard];
-          },
-        },
+  const [addTask, { loading }] = useMutation(ADD_BOARD_CARD, {
+    update: (cache, { data }) => {
+      const existingCards = cache.readQuery<GetBoardCardsResponse>({
+        query: GET_ALL_BOARD_CARDS,
       });
+      const newCard = data?.addBoardCard;
+
+      if (existingCards && newCard) {
+        cache.writeQuery<GetBoardCardsResponse>({
+          query: GET_ALL_BOARD_CARDS,
+          data: {
+            boardCards: [...existingCards.boardCards, newCard],
+          },
+        });
+      }
     },
   });
+
+  const [publishTask, { loading: isPublishing }] = useMutation(
+    PUBLISH_BOARD_CARD,
+    {
+      update: (cache, { data }) => {
+        const existingCards = cache.readQuery<GetBoardCardsResponse>({
+          query: GET_ALL_BOARD_CARDS,
+        });
+        const newCard = data?.addBoardCard;
+
+        if (existingCards && newCard) {
+          cache.writeQuery<GetBoardCardsResponse>({
+            query: GET_ALL_BOARD_CARDS,
+            data: {
+              boardCards: [...existingCards.boardCards, newCard],
+            },
+          });
+        }
+      },
+    }
+  );
 
   const onFinish = async (values: Inputs) => {
     const avatar =
@@ -59,7 +95,9 @@ const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
 
     try {
       const result = await addTask({ variables: { ...newTask } });
-      if (result.data?.createBoardCard?.id) {
+      const id = result.data?.createBoardCard?.id;
+      if (id) {
+        await publishTask({ variables: { id } });
         handleCancel();
       }
     } catch (error) {

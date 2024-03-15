@@ -19,13 +19,6 @@ interface IBoardContentSectionCardData {
   boardCards: IBoardContentSectionCard[];
 }
 
-const items: MenuProps["items"] = [
-  {
-    label: "Delete Task",
-    key: "0",
-  },
-];
-
 const BoardContentColumn = ({ title, emoji }: IBoardContentList) => {
   const [isCardAdding, setIsCardAdding] = useState(false);
   const { data, error, loading } = useQuery<IBoardContentSectionCardData>(
@@ -51,11 +44,8 @@ const BoardContentColumn = ({ title, emoji }: IBoardContentList) => {
             count={data?.boardCards.length}
           />
         </Title>
-        <Dropdown menu={{ items }}>
-          <Flex>
-            <MenuIcon className={styles.menuIcon} />
-          </Flex>
-        </Dropdown>
+
+        <MenuIcon className={styles.menuIcon} />
       </Flex>
       <Flex style={{ width: "15.5rem" }} vertical gap={"0.5rem"}>
         {loading ? (

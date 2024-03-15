@@ -1,94 +1,37 @@
 {
   "table": [
     {
-      "key": "1",
+      "key": "fnhm80dsa12",
       "name": "Alex",
       "surname": "Brown",
-      "dateOfBirth": "2000-02-15",
+      "dateOfBirth": 1710498217,
       "email": "john@gmail.com",
       "age": 32,
-      "phone": "+1234567890",
-      "roles": ["manager", "admin"]
+      "phone": "+79528895248",
+      "roles": ["manager", "admin"],
+      "id": "747c"
     },
     {
-      "key": "2",
+      "key": "gnhgj564534fw3",
       "name": "Charlie",
       "surname": "Green",
-      "dateOfBirth": "1980-01-20",
+      "dateOfBirth": 1710498217,
       "email": "jim@gmail.com",
-      "phone": "+1234567890",
+      "phone": "+79528895248",
       "age": 42,
-      "roles": ["user"]
+      "roles": ["user"],
+      "id": "a670"
     },
     {
-      "key": "3",
+      "key": "alsjdlasdaskldla",
       "name": "Bob",
       "surname": "Black",
-      "dateOfBirth": "1990-03-10",
+      "dateOfBirth": 1710498217,
       "email": "joe@gmail.com",
-      "phone": "+1234567890",
+      "phone": "+79528895248",
       "age": 32,
-      "roles": ["user", "manager"]
-    },
-    {
-      "key": "4",
-      "name": "Charlie",
-      "surname": "Green",
-      "dateOfBirth": "1980-01-20",
-      "email": "jim@gmail.com",
-      "phone": "+1234567890",
-      "age": 42,
-      "roles": ["user"]
-    },
-    {
-      "key": "5",
-      "name": "Charlie",
-      "surname": "Green",
-      "dateOfBirth": "1980-01-20",
-      "email": "jim@gmail.com",
-      "phone": "+1234567890",
-      "age": 42,
-      "roles": ["user"]
-    },
-    {
-      "key": "6",
-      "name": "Charlie",
-      "surname": "Green",
-      "dateOfBirth": "1980-01-20",
-      "email": "jim@gmail.com",
-      "phone": "+1234567890",
-      "age": 42,
-      "roles": ["user"]
-    },
-    {
-      "key": "7",
-      "name": "Charlie",
-      "surname": "Green",
-      "dateOfBirth": "1980-01-20",
-      "email": "jim@gmail.com",
-      "phone": "+1234567890",
-      "age": 42,
-      "roles": ["user"]
-    },
-    {
-      "id": "a28a",
-      "key": "8",
-      "name": "asd",
-      "surname": "asd",
-      "email": "asd@asd.dfg",
-      "phone": "+71111111111",
-      "dateOfBirth": 1711832400000,
-      "roles": ["admin"]
-    },
-    {
-      "id": "7e17",
-      "name": "asdasdasd",
-      "surname": "asdasda",
-      "email": "asd@asd.dfgaa",
-      "phone": "+71111111111",
-      "dateOfBirth": 1710018000000,
-      "roles": ["user"],
-      "key": ":r1t:"
+      "roles": ["user", "manager"],
+      "id": "499d"
     }
   ]
 }

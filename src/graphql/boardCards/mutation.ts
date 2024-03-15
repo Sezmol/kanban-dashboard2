@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const ADD_BOARD_CARD = gql`
-  mutation MyMutation(
+  mutation AddBoardCard(
     $title: String!
     $description: String!
     $parentSection: String!
@@ -17,6 +17,14 @@ export const ADD_BOARD_CARD = gql`
         parentSection: $parentSection
       }
     ) {
+      id
+    }
+  }
+`;
+
+export const PUBLISH_BOARD_CARD = gql`
+  mutation PublishBoardCard($id: ID!) {
+    publishBoardCard(where: { id: $id }) {
       id
     }
   }

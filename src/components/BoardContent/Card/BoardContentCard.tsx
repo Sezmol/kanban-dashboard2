@@ -95,7 +95,7 @@ const BoardContentCard = ({
             className={styles.label}
             key={index}
           >
-            {label}
+            {label[0].toUpperCase() + label.slice(1)}
           </Flex>
         ))}
       </Flex>

@@ -1,15 +1,16 @@
 export const getLabelColor = (label: string) => {
-  switch (label) {
-    case "Must":
+  const labelLowerCase = label.toLowerCase();
+  switch (labelLowerCase) {
+    case "must":
       return {
         color: "#EF887F",
         backgroundColor: "#FBE4E1",
       };
-    case "Tiny":
+    case "tiny":
       return { color: "#60BF9D", backgroundColor: "#EDFAF6" };
-    case "Medium":
+    case "medium":
       return { color: "#60BF9D", backgroundColor: "#EDFAF6" };
-    case "Huge":
+    case "huge":
       return { color: "#60BF9D", backgroundColor: "#EDFAF6" };
     default:
       return {};

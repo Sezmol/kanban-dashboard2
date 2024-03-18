@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, Layout, Progress } from "antd";
+import { Avatar, Button, Flex, Progress } from "antd";
 import AvatarIcon from "../../icons/AvatarIcon";
 
 import styles from "./MainHeader.module.scss";

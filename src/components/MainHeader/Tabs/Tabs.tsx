@@ -1,9 +1,10 @@
 import { Tabs as AntdTabs } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
+
 import BoardContentHeader from "../../BoardContent/Header/BoardContentHeader";
+import TableContent from "../../TableContent/TableContent";
 
 import styles from "./Tabs.module.scss";
-import TableContent from "../../TableContent/TableContent";
 
 const tabList = [
   {

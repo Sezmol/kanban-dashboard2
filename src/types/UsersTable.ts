@@ -1,7 +1,7 @@
 export interface IUser {
   id: string;
   key: string;
-  dateOfBirth: string;
+  dateOfBirth: number;
   name: string;
   surname: string;
   email: string;
@@ -9,8 +9,25 @@ export interface IUser {
   roles: string[];
 }
 
-export interface IUserResponse extends Omit<IUser, "dateOfBirth"> {
-  id: string;
-  key: string;
-  dateOfBirth: string;
+export type ControllersName =
+  | "name"
+  | "surname"
+  | "email"
+  | "phone"
+  | "dateOfBirth"
+  | "roles";
+
+export interface IController {
+  type: "datePicker" | "select" | "input";
+  name: ControllersName;
+  rules: {
+    required: string;
+    pattern?: { value: RegExp; message: string };
+  };
+  renderProps: {
+    inputProps: {
+      placeholder: string;
+      style?: { width: "100%" };
+    };
+  };
 }

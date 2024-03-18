@@ -1,9 +1,23 @@
-import { FloatButton, Table, TableProps, Tag } from "antd";
-import { useGetAllUsersQuery } from "../../redux/services/user";
+import { useReducer, useState } from "react";
+import {
+  Flex,
+  FloatButton,
+  Pagination,
+  Space,
+  Table,
+  TableProps,
+  Tag,
+} from "antd";
+import { LoadingOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
+
 import { IUser } from "../../types/UsersTable";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import { useReducer } from "react";
 import CreateUserModal from "../modals/CreateUser/CreateUserModal";
+import TableContentTitle from "./TableContentTitle";
+import {
+  useDeleteUserMutation,
+  useGetAllUsersQuery,
+} from "../../redux/services/user";
 
 interface initialStateType {
   isModalVisible: boolean;
@@ -31,8 +45,8 @@ const reducer = (state = initialState, action: IAction) => {
     case "OPEN_MODAL":
       return {
         ...state,
-        isModalVisible: true,
         rowData: null,
+        isModalVisible: true,
       };
     case "CLOSE_MODAL":
       return {
@@ -54,46 +68,74 @@ const reducer = (state = initialState, action: IAction) => {
 const TableContent = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { rowData, isModalVisible } = state;
-  const { data: users, isLoading } = useGetAllUsersQuery();
+  const [sort, setSort] = useState("name");
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useGetAllUsersQuery({
+    sortBy: sort,
+    page: page,
+  });
+
+  // ASK Как сделать фильтарцию. Почему не работает сортировтка по dateOfBirth
+
+  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
   const editRow = (user: IUser) => {
     dispatch({ type: ActionTypes.EDIT_USER, payload: user });
   };
 
+  const deleteRow = (id: string) => {
+    deleteUser(id);
+  };
+
+  const handleCloseModal = () => {
+    dispatch({ type: ActionTypes.CLOSE_MODAL });
+  };
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Flex justify='center' align='center'>
+        Loading...
+      </Flex>
+    );
   }
 
   const columns: TableProps<IUser>["columns"] = [
     {
-      title: "Name",
+      title: <TableContentTitle title='Name' sort={sort} setSort={setSort} />,
       dataIndex: "name",
       key: "name",
-      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: "Surname",
+      title: (
+        <TableContentTitle title='Surname' sort={sort} setSort={setSort} />
+      ),
       dataIndex: "surname",
       key: "surname",
-      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: "Date of Birth",
+      title: (
+        <TableContentTitle
+          title='Date of Birth'
+          sort={sort}
+          setSort={setSort}
+        />
+      ),
       dataIndex: "dateOfBirth",
       key: "dateOfBirth",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+
+      render: (_, { dateOfBirth }) => {
+        return dayjs(dateOfBirth).format("DD.MM.YYYY");
+      },
     },
     {
-      title: "Email",
+      title: <TableContentTitle title='Email' sort={sort} setSort={setSort} />,
       dataIndex: "email",
       key: "email",
-      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: "Phone",
+      title: <TableContentTitle title='Phone' sort={sort} setSort={setSort} />,
       dataIndex: "phone",
       key: "phone",
-      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: "Roles",
@@ -113,7 +155,6 @@ const TableContent = () => {
           value: "admin",
         },
       ],
-      // ASK
       onFilter: (value, record) => record.roles.includes(`${value}`),
       render: (_, { roles }) => (
         <>
@@ -146,7 +187,18 @@ const TableContent = () => {
       title: "Actions",
       dataIndex: "actions",
       render: (_, record) => {
-        return <a onClick={() => editRow(record)}>Edit</a>;
+        return (
+          <>
+            {isDeleting ? (
+              <LoadingOutlined />
+            ) : (
+              <Space>
+                <a onClick={() => editRow(record)}>Edit</a>
+                <a onClick={() => deleteRow(record.id)}>Delete</a>
+              </Space>
+            )}
+          </>
+        );
       },
     },
   ];
@@ -156,10 +208,15 @@ const TableContent = () => {
       <Table
         style={{ padding: "0.5rem 1rem" }}
         columns={columns}
-        dataSource={users}
-        pagination={{
-          position: ["bottomLeft"],
-        }}
+        dataSource={data?.data}
+        pagination={false}
+        bordered
+      />
+      <Pagination
+        style={{ marginTop: "1rem" }}
+        current={page}
+        total={data?.items}
+        onChange={(page) => setPage(page)}
       />
       <FloatButton
         onClick={() => dispatch({ type: ActionTypes.OPEN_MODAL })}
@@ -171,7 +228,7 @@ const TableContent = () => {
 
       <CreateUserModal
         rowData={rowData}
-        handleCloseModal={() => dispatch({ type: ActionTypes.CLOSE_MODAL })}
+        handleCloseModal={handleCloseModal}
         isVisible={isModalVisible}
       />
     </>

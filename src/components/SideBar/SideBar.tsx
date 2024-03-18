@@ -1,10 +1,11 @@
 import Sider from "antd/es/layout/Sider";
 import Title from "antd/es/typography/Title";
-
-import styles from "./SideBar.module.scss";
 import { Avatar, Menu, Typography } from "antd";
 import { MenuItemType } from "antd/es/menu/hooks/useItems";
+
 import Analytics from "../Analytics/Analytics";
+
+import styles from "./SideBar.module.scss";
 
 const projectsList: MenuItemType[] = [
   {

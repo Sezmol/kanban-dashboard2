@@ -1,20 +1,15 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Button, Card, Form, Input, Select, SelectProps } from "antd";
 import {
   ADD_BOARD_CARD,
   PUBLISH_BOARD_CARD,
 } from "../../../graphql/boardCards/mutation";
 import { GET_ALL_BOARD_CARDS } from "../../../graphql/boardCards/query";
-import { IBoardContentSectionCard } from "../../../types/BoardContent";
 
 type Inputs = {
   title: string;
   description: string;
   labels: string[];
-};
-
-type GetBoardCardsResponse = {
-  boardCards: IBoardContentSectionCard[];
 };
 
 interface IAddTaskFormProps {
@@ -42,42 +37,14 @@ const options: SelectProps["options"] = [
 ];
 
 const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
-  const [addTask, { loading }] = useMutation(ADD_BOARD_CARD, {
-    update: (cache, { data }) => {
-      const existingCards = cache.readQuery<GetBoardCardsResponse>({
-        query: GET_ALL_BOARD_CARDS,
-      });
-      const newCard = data?.addBoardCard;
+  const [addTask, { loading }] = useMutation(ADD_BOARD_CARD);
 
-      if (existingCards && newCard) {
-        cache.writeQuery<GetBoardCardsResponse>({
-          query: GET_ALL_BOARD_CARDS,
-          data: {
-            boardCards: [...existingCards.boardCards, newCard],
-          },
-        });
-      }
-    },
-  });
+  // ASK Почему данные не рефетчатся
 
   const [publishTask, { loading: isPublishing }] = useMutation(
     PUBLISH_BOARD_CARD,
     {
-      update: (cache, { data }) => {
-        const existingCards = cache.readQuery<GetBoardCardsResponse>({
-          query: GET_ALL_BOARD_CARDS,
-        });
-        const newCard = data?.addBoardCard;
-
-        if (existingCards && newCard) {
-          cache.writeQuery<GetBoardCardsResponse>({
-            query: GET_ALL_BOARD_CARDS,
-            data: {
-              boardCards: [...existingCards.boardCards, newCard],
-            },
-          });
-        }
-      },
+      refetchQueries: [{ query: GET_ALL_BOARD_CARDS }],
     }
   );
 
@@ -157,7 +124,7 @@ const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
           htmlType='submit'
           style={{ backgroundColor: "#6e6af0" }}
           type='primary'
-          loading={loading}
+          loading={loading || isPublishing}
         >
           {loading ? "Loading..." : "Submit"}
         </Button>
@@ -165,7 +132,7 @@ const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
           onClick={handleCancel}
           style={{ backgroundColor: "#ef887f" }}
           type='primary'
-          disabled={loading}
+          disabled={loading || isPublishing}
         >
           Cancel
         </Button>

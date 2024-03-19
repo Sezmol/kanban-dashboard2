@@ -1,0 +1,150 @@
+{
+  "table": [
+    {
+      "id": "dc34cbf9-219a-4444-9ebb-420ef15f294e",
+      "phone": "+71111111111",
+      "name": "asd",
+      "surname": "asd",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin",
+        "user",
+        "manager"
+      ],
+      "key": "044acce1-c425-4d0a-85f5-77b75d17cb3e"
+    },
+    {
+      "id": "55101fe7-d9df-4705-9be9-5a8478a63d91",
+      "phone": "+71111111111",
+      "name": "sdasdasd",
+      "surname": "dasdasd",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin"
+      ],
+      "key": "d761631a-d2ae-405c-bb6a-08eda1951088"
+    },
+    {
+      "id": "2cddd858-7bcf-47b8-b90f-8be48e0249e7",
+      "phone": "+71111111111",
+      "name": "zxczxc",
+      "surname": "zxcqwe",
+      "email": "zxczx@zxcz.zxczx",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "user"
+      ],
+      "key": "e73aaf94-1200-4a8d-8488-1a00a24553d0"
+    },
+    {
+      "id": "5dfd1027-9963-4e42-ba2a-1f92c538f899",
+      "phone": "+72222222222",
+      "name": "qweqweqwe",
+      "surname": "qweqwezxczx",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1704142800000,
+      "roles": [
+        "manager"
+      ],
+      "key": "542ddca1-4a52-483c-8540-8e2c48af8e69"
+    },
+    {
+      "id": "c478fe42-4671-4cad-9756-9e3ae8deb707",
+      "phone": "+71111111111",
+      "name": "пьпртпр",
+      "surname": "рапрапр",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin",
+        "user",
+        "manager"
+      ],
+      "key": "4841e914-7cb0-4fd7-9fc9-61f480ca4920"
+    },
+    {
+      "id": "f3ef44c4-14d0-4ad5-96cd-8e177ed3ee8c",
+      "phone": "+71111111111",
+      "name": "нгшнгшнгшнг",
+      "surname": "гшнгшнгшнгн",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin",
+        "user",
+        "manager"
+      ],
+      "key": "222e7931-802d-4b72-b995-f3575a0d7a91"
+    },
+    {
+      "id": "acb81694-e849-43e3-8045-193e2ff253d8",
+      "phone": "+71111111111",
+      "name": "пьпртпр",
+      "surname": "рапрапр",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin",
+        "user",
+        "manager"
+      ],
+      "key": "2f390b6a-1783-4ad0-832c-5a48b3ce7cd5"
+    },
+    {
+      "id": "7386fa7b-94a5-4949-a9af-b8378a47d7b4",
+      "phone": "+71111111111",
+      "name": "пьпртпр",
+      "surname": "рапрапр",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin",
+        "user",
+        "manager"
+      ],
+      "key": "c356f573-5ab1-481c-9c5a-b24c6c36c467"
+    },
+    {
+      "id": "0a1364c0-f216-4613-a327-d90fb79791dd",
+      "phone": "+71111111111",
+      "name": "пьпртпр",
+      "surname": "рапрапр",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin",
+        "user",
+        "manager"
+      ],
+      "key": "db178f69-e8c6-4b95-a2a1-5ec508f11016"
+    },
+    {
+      "id": "08cc57d7-dd2e-43c2-98a8-b124d7ce6f0f",
+      "phone": "+71111111111",
+      "name": "пьпртпр",
+      "surname": "рапрапр",
+      "email": "asd@asd.dfg",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "admin",
+        "user",
+        "manager"
+      ],
+      "key": "22ab8fa0-84cb-4a89-b33c-d46f009b751d"
+    },
+    {
+      "id": "ff735bae-2af6-4a27-83d2-dafa26ac7964",
+      "phone": "+70000000000",
+      "name": "AAAA",
+      "surname": "AAAA",
+      "email": "AAAAAAAAAAAAAA@AAAAA.AAA",
+      "dateOfBirth": 1709240400000,
+      "roles": [
+        "user"
+      ],
+      "key": "1fdd20d5-7d58-40f9-bc10-02b62f3917d9"
+    }
+  ]
+}

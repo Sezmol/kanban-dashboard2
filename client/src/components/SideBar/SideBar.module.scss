@@ -1,0 +1,37 @@
+@import "../../styles/variables.scss";
+
+.sidebar {
+  width: auto !important;
+  min-width: auto !important;
+  max-width: 13rem !important;
+  padding: 1rem 0.75rem 2.5rem 0.75rem;
+
+  .menu {
+    border-right: none !important;
+    margin-bottom: 3.5rem;
+
+    :global {
+      .ant-menu-item-selected {
+        background-color: $main-active-color !important;
+
+        .ant-typography {
+          color: $main-background-color !important;
+        }
+      }
+    }
+
+    .projectItem {
+      padding: 0.5rem !important;
+      width: 11.375rem;
+      border: 1px solid $main-border-color;
+
+      :global {
+        .ant-menu-title-content {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+      }
+    }
+  }
+}

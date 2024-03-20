@@ -1,27 +1,27 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_BOARD_CARDS = gql`
-  query allBoardsCards {
-    boardCards {
-      title
-      description
+  query GetAllCards {
+    cards {
       avatars
-      labels
       id
-      parentSection
+      title
+      labels
+      description
+      columnId
     }
   }
 `;
 
 export const GET_BOARD_CARDS = gql`
-  query boardCards($parentSection: String!) {
-    boardCards(where: { parentSection: $parentSection }) {
+  query boardCards($columnId: String!) {
+    boardCards(where: { columnId: $columnId }) {
       title
       description
       avatars
       labels
       id
-      parentSection
+      columnId
     }
   }
 `;

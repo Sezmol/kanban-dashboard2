@@ -1,41 +1,31 @@
+import { useEffect, useState } from "react";
 import { Card, Flex, Typography } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
-
 import { Bar, BarChart, Cell, Line, LineChart, Pie, PieChart } from "recharts";
+import { io } from "socket.io-client";
 
 import styles from "./Analytics.module.scss";
+import useSocketData from "../../websocket/useSocketData";
 
 const lineChartData = [
   {
-    name: "Page A",
-    pv: 0,
-    amt: 100,
+    x: 0,
   },
   {
-    name: "Page B",
-    pv: 60,
-    amt: 100,
+    x: 60,
   },
   {
-    name: "Page C",
-    pv: 20,
-    amt: 100,
+    x: 20,
   },
   {
-    name: "Page D",
-    pv: 50,
-    amt: 100,
+    x: 50,
   },
   {
-    name: "Page D",
-    pv: 0,
-    amt: 100,
+    x: 0,
   },
   {
-    name: "Page E",
-    pv: 100,
-    amt: 100,
+    x: 100,
   },
 ];
 
@@ -102,7 +92,11 @@ const pieChartData = [
 
 const COLORS = ["#B6EDFF", "#FFF2AB", "#B2BFFA"];
 
+const socket = io("http://localhost:8000");
+
 const Analytics = () => {
+  const analyticsData = useSocketData("message");
+
   return (
     <Flex className={styles.analytics} vertical gap={12}>
       <Title level={5}>Analytics</Title>
@@ -112,8 +106,8 @@ const Analytics = () => {
         </Title>
         <Paragraph style={{ fontSize: 24, fontWeight: 500 }}>2d 3h</Paragraph>
         <Flex>
-          <LineChart width={88} height={38} data={lineChartData}>
-            <Line type='linear' dataKey='pv' stroke='#60BF9D' />
+          <LineChart width={88} height={38} data={analyticsData}>
+            <Line type='linear' dataKey='x' stroke='#60BF9D' />
           </LineChart>
 
           <Typography.Text

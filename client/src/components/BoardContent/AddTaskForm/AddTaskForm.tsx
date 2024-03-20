@@ -14,7 +14,7 @@ type Inputs = {
 
 interface IAddTaskFormProps {
   handleCancel: () => void;
-  parentSection: string;
+  columnId: string | number;
 }
 
 const options: SelectProps["options"] = [
@@ -36,10 +36,8 @@ const options: SelectProps["options"] = [
   },
 ];
 
-const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
+const AddTaskForm = ({ handleCancel, columnId }: IAddTaskFormProps) => {
   const [addTask, { loading }] = useMutation(ADD_BOARD_CARD);
-
-  // ASK Почему данные не рефетчатся
 
   const [publishTask, { loading: isPublishing }] = useMutation(
     PUBLISH_BOARD_CARD,
@@ -55,25 +53,29 @@ const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
     const newTask = {
       title: values.title,
       description: values.description,
-      parentSection: parentSection,
+      columnId: columnId,
       avatars: [avatar],
       labels: values.labels || [],
     };
 
     try {
       const result = await addTask({ variables: { ...newTask } });
-      const id = result.data?.createBoardCard?.id;
+      if (!result) {
+        throw new Error("Error while creating card");
+      }
+
+      const id = result.data?.createCard?.id;
       if (id) {
         await publishTask({ variables: { id } });
         handleCancel();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   return (
-    <Card style={{}}>
+    <Card>
       <Form
         onFinish={onFinish}
         style={{
@@ -116,6 +118,7 @@ const AddTaskForm = ({ handleCancel, parentSection }: IAddTaskFormProps) => {
             mode='multiple'
             allowClear
             placeholder='Please select labels'
+            maxCount={2}
             options={options}
           />
         </Form.Item>

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Badge, Dropdown, Flex, MenuProps } from "antd";
+import { Badge, Flex } from "antd";
 import Title from "antd/es/typography/Title";
 
 import MenuIcon from "../../../icons/MenuIcon";
 import BoardContentCard from "../Card/BoardContentCard";
-import { IBoardContentList } from "../../../types/BoardContent";
+import { IBoardContentColumn } from "../../../types/BoardContent";
 import AddTaskButton from "../AddTaskButton/AddTaskButton";
 import AddTaskForm from "../AddTaskForm/AddTaskForm";
 import {
@@ -16,30 +16,41 @@ import { CSS } from "@dnd-kit/utilities";
 
 import styles from "./BoardContentColumn.module.scss";
 
-const BoardContentColumn = ({ id, title, emoji, cards }: IBoardContentList) => {
+const BoardContentColumn = ({
+  id,
+  title,
+  emoji,
+  cards,
+}: IBoardContentColumn) => {
   const [isCardAdding, setIsCardAdding] = useState(false);
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: id,
-      data: {
-        type: "column",
-        column: {
-          id,
-          title,
-          emoji,
-          cards,
-        },
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: id,
+    data: {
+      type: "column",
+      column: {
+        id,
+        title,
+        emoji,
+        cards,
       },
-    });
+    },
+  });
+
+  const style = {
+    opacity: isDragging ? 0.5 : 1,
+    transition,
+    transform: CSS.Translate.toString(transform),
+  };
 
   return (
-    <Flex
-      style={{ transition, transform: CSS.Translate.toString(transform) }}
-      ref={setNodeRef}
-      {...attributes}
-      vertical
-      gap={"1rem"}
-    >
+    <Flex style={style} ref={setNodeRef} {...attributes} vertical gap={"1rem"}>
       <Flex align='center' justify='space-between' className={styles.section}>
         <Title className={styles.title} level={5}>
           {emoji} {title}
@@ -56,7 +67,7 @@ const BoardContentColumn = ({ id, title, emoji, cards }: IBoardContentList) => {
         </Title>
 
         <Flex {...listeners} style={{ cursor: "grab" }}>
-          <MenuIcon className={styles.menuIcon} />
+          <MenuIcon />
         </Flex>
       </Flex>
       <Flex style={{ width: "15.5rem" }} vertical gap={"0.5rem"}>
@@ -69,14 +80,14 @@ const BoardContentColumn = ({ id, title, emoji, cards }: IBoardContentList) => {
               description={card.description}
               avatars={card.avatars}
               labels={card.labels}
-              parentSection={card.parentSection}
+              columnId={card.columnId}
             />
           ))}
         </SortableContext>
 
         {isCardAdding && (
           <AddTaskForm
-            parentSection={title}
+            columnId={id}
             handleCancel={() => setIsCardAdding(false)}
           />
         )}

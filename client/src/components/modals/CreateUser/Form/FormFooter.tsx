@@ -1,5 +1,5 @@
 import { Button, Flex } from "antd";
-import { IUser } from "../../../types/UsersTable";
+import { IUser } from "../../../../types/UsersTable";
 
 interface FormFooterProps {
   rowData?: IUser | null;

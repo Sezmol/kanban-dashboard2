@@ -13,8 +13,8 @@ import {
   textValidation,
 } from "../../../utils/validation";
 import { IController, IUser } from "../../../types/UsersTable";
-import FormItem from "./FormItem";
-import FormFooter from "./FormFooter";
+import FormItem from "./Form/FormItem";
+import FormFooter from "./Form/FormFooter";
 
 type CreateUserModalProps = {
   handleCloseModal: () => void;
@@ -76,7 +76,7 @@ const controllers: IController[] = [
     },
   },
   {
-    name: "dateOfBirth",
+    name: "birthday",
     type: "datePicker",
     rules: {
       required: "Date of birth is required",
@@ -103,6 +103,15 @@ const controllers: IController[] = [
   },
 ];
 
+const defaultValues = {
+  phone: "+7",
+  name: "",
+  surname: "",
+  email: "",
+  birthday: 0,
+  roles: [],
+};
+
 const CreateUserModal = ({
   isVisible,
   handleCloseModal,
@@ -113,7 +122,7 @@ const CreateUserModal = ({
     control,
     reset,
     formState: { errors },
-  } = useForm<IUser>({ defaultValues: { phone: "+7" } });
+  } = useForm<IUser>({ defaultValues: defaultValues });
 
   useEffect(() => {
     if (rowData) {
@@ -124,10 +133,8 @@ const CreateUserModal = ({
   const [createUser, { isLoading }] = useCreateUserMutation();
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
 
-  // ASK Почему данные остаются в форме
-
   const closeModal = () => {
-    reset();
+    reset(defaultValues);
     handleCloseModal();
   };
 
@@ -158,7 +165,7 @@ const CreateUserModal = ({
       onCancel={closeModal}
       open={isVisible}
     >
-      <Form onFinish={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Space direction='vertical' size='middle' style={{ width: "100%" }}>
           {controllers.map((controller) => (
             <FormItem
@@ -177,96 +184,9 @@ const CreateUserModal = ({
             isUpdating={isUpdating}
           />
         </Space>
-      </Form>
+      </form>
     </Modal>
   );
 };
 
 export default CreateUserModal;
-
-// {controllers.map((controller) => {
-//   return (
-//     <Controller
-//       key={controller.name}
-//       name={controller.name}
-//       control={control}
-//       rules={controller.rules}
-//       render={({ field, fieldState }) => (
-//         <>
-//           <Typography.Text>
-//             {`${controller.renderProps.inputProps.placeholder}:`}
-//           </Typography.Text>
-//           <Input
-//             status={fieldState.error ? "error" : undefined}
-//             {...field}
-//             {...controller.renderProps.inputProps}
-//           />
-//           {errors[controller.name] && (
-//             <p style={{ color: "red" }}>
-//               {errors[controller.name]?.message}
-//             </p>
-//           )}
-//         </>
-//       )}
-//     />
-//   );
-// })}
-// {/* ASK */}
-// <Controller
-//   control={control}
-//   name='dateOfBirth'
-//   rules={{
-//     required: {
-//       value: true,
-//       message: "Date of birth is required",
-//     },
-//   }}
-//   render={({ field, fieldState }) => (
-//     <>
-//       <Typography.Text>Date of birth:</Typography.Text>
-//       <DatePicker
-//         status={fieldState.error ? "error" : undefined}
-//         placeholder='Choose date of your birth'
-//         style={{ width: "100%" }}
-//         value={field.value ? dayjs(field.value) : null}
-//         ref={field.ref}
-//         onBlur={field.onBlur}
-//         onChange={(date) =>
-//           field.onChange(date ? date.valueOf() : null)
-//         }
-//       />
-
-//       {errors.dateOfBirth && (
-//         <p style={{ color: "red" }}>{errors.dateOfBirth?.message}</p>
-//       )}
-//     </>
-//   )}
-// />
-// <Controller
-//   control={control}
-//   name='roles'
-//   rules={{
-//     required: {
-//       value: true,
-//       message: "Roles are required",
-//     },
-//   }}
-//   render={({ field, fieldState }) => (
-//     <>
-//       <Typography.Text>Roles:</Typography.Text>
-//       <Select
-//         status={fieldState.error ? "error" : undefined}
-//         mode='multiple'
-//         allowClear
-//         style={{ width: "100%" }}
-//         placeholder='Please select roles'
-//         options={options}
-//         {...field}
-//       />
-
-//       {errors.roles && (
-//         <p style={{ color: "red" }}>{errors.roles?.message}</p>
-//       )}
-//     </>
-//   )}
-// />

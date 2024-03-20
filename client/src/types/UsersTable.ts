@@ -1,7 +1,7 @@
 export interface IUser {
   id: string;
   key: string;
-  dateOfBirth: number;
+  birthday: number;
   name: string;
   surname: string;
   email: string;
@@ -14,7 +14,7 @@ export type ControllersName =
   | "surname"
   | "email"
   | "phone"
-  | "dateOfBirth"
+  | "birthday"
   | "roles";
 
 export interface IController {

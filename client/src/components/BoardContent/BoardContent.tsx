@@ -1,134 +1,207 @@
+import { useEffect, useState } from "react";
 import { Flex } from "antd";
-
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { LoadingOutlined } from "@ant-design/icons";
-
-import BoardContentColumn from "./Column/BoardContentColumn";
-import {
-  IBoardContentList,
-  IBoardContentSectionCard,
-} from "../../types/BoardContent";
-import { GET_ALL_BOARD_COLUMNS } from "../../graphql/boardColumns/query";
-
-import styles from "./BoardContent.module.scss";
 import {
   DndContext,
   DragEndEvent,
   DragOverEvent,
+  DragOverlay,
   DragStartEvent,
-  UniqueIdentifier,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import { useEffect, useState } from "react";
 
-// const boardContentList: IBoardContentList[] = [
-//   {
-//     id: "1",
-//     title: "New",
-//     emoji: "🆕",
-//   },
-//   {
-//     id: "2",
-//     title: "In progress",
-//     emoji: "🏗️",
-//   },
-//   {
-//     id: "3",
-//     title: "Review",
-//     emoji: "👀",
-//   },
-//   {
-//     id: "4",
-//     title: "Done",
-//     emoji: "✅",
-//   },
-// ];
+import BoardContentColumn from "./Column/BoardContentColumn";
+import {
+  IBoardContentColumn,
+  IBoardContentColumnCard,
+} from "../../types/BoardContent";
+import { GET_ALL_BOARD_CARDS } from "../../graphql/boardCards/query";
+import BoardContentCard from "./Card/BoardContentCard";
+import {
+  PUBLISH_BOARD_CARD,
+  UPDATE_BOARD_CARD,
+} from "../../graphql/boardCards/mutation";
 
-interface Data {
-  columns: IBoardContentList[];
+import styles from "./BoardContent.module.scss";
+
+const boardContentList = [
+  {
+    id: "clty4h7gug9lj07vznvxamyxw",
+    title: "New",
+    emoji: "🆕",
+  },
+  {
+    id: "clty4o24jghfn07vznbsmo4r6",
+    title: "In progress",
+    emoji: "🏗️",
+  },
+  {
+    id: "clty4oowqghxe07vzogqow2fj",
+    title: "Review",
+    emoji: "👀",
+  },
+  {
+    id: "clty4p2mrggor07w0n81brry7",
+    title: "Done",
+    emoji: "✅",
+  },
+];
+
+interface ICardsData {
+  cards: IBoardContentColumnCard[];
 }
 
 const BoardContent = () => {
-  const { data, loading } = useQuery<Data>(GET_ALL_BOARD_COLUMNS);
-  const [columns, setColumns] = useState<IBoardContentList[]>();
-  const [cards, setCards] = useState<IBoardContentSectionCard[]>();
-  const [activeColumn, setActiveColumn] = useState<IBoardContentList | null>(
+  const { data: cardsData, loading } =
+    useQuery<ICardsData>(GET_ALL_BOARD_CARDS);
+  const [updateCard, { loading: isUpdating }] = useMutation(UPDATE_BOARD_CARD);
+  const [publishCard] = useMutation(PUBLISH_BOARD_CARD);
+  const [columns, setColumns] = useState(boardContentList);
+  const [cards, setCards] = useState<IBoardContentColumnCard[]>();
+  const [activeColumn, setActiveColumn] = useState<IBoardContentColumn | null>(
     null
   );
-  const [activeCard, setactiveCard] = useState<IBoardContentSectionCard | null>(
+  const [activeCard, setActiveCard] = useState<IBoardContentColumnCard | null>(
     null
   );
 
   useEffect(() => {
-    if (data) {
-      setColumns(data.columns);
-      setCards(data.columns.map((column) => column.cards).flat());
+    if (cardsData) {
+      setCards(cardsData.cards);
     }
-  }, [data]);
-
-  console.log(cards);
-
-  if (loading) {
-    return (
-      <Flex style={{ width: "100%" }} justify='center' align='center'>
-        <LoadingOutlined style={{ fontSize: "5rem" }} />
-      </Flex>
-    );
-  }
-
-  const getItemPos = (id: UniqueIdentifier) =>
-    columns?.findIndex((item) => item.id === id);
+  }, [cardsData]);
 
   const handleDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === "column") {
       setActiveColumn(event.active.data.current.column);
     }
+
+    if (event.active.data.current?.type === "card") {
+      setActiveCard(event.active.data.current.card);
+    }
   };
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
+    if (!over) return;
 
-    if (active.id === over?.id) {
-      return;
+    const activeId = active.id;
+    const overId = over.id;
+
+    if (activeId === overId) return;
+
+    const isActiveATask = active.data.current?.type === "card";
+    const isOverATask = over.data.current?.type === "card";
+
+    if (!isActiveATask) return;
+
+    if (isActiveATask && isOverATask) {
+      setCards((cards) => {
+        if (cards) {
+          const newCards = [...cards];
+          const activeIndex = cards.findIndex((t) => t.id === activeId);
+          const overIndex = cards.findIndex((t) => t.id === overId);
+
+          if (cards[activeIndex].columnId !== cards[overIndex].columnId) {
+            // console.log("DROPPING TASK OVER CARD", { active, over });
+            const updatedCard = {
+              ...cards[activeIndex],
+              columnId: cards[overIndex].columnId,
+            };
+
+            newCards[activeIndex] = updatedCard;
+            return arrayMove(newCards, activeIndex, overIndex - 1);
+          }
+
+          return arrayMove(newCards, activeIndex, overIndex);
+        }
+      });
     }
 
-    if (over?.id) {
-      const isActiveTask = active.data.current?.type === "card";
-      const isOverTask = over.data.current?.type === "card";
+    const isOverAColumn = over.data.current?.type === "column";
 
-      if (isActiveTask && isOverTask) {
-      }
-    }
-  };
+    if (isActiveATask && isOverAColumn) {
+      setCards((cards) => {
+        if (cards) {
+          const newCards = [...cards];
+          const activeIndex = newCards.findIndex((t) => t.id === activeId);
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+          const updatedCard = { ...newCards[activeIndex], columnId: overId };
 
-    if (active.id === over?.id) {
-      return;
-    }
+          newCards[activeIndex] = updatedCard;
 
-    if (over?.id) {
-      setColumns((columns) => {
-        const originalPos = getItemPos(active.id);
-        const newPos = getItemPos(over?.id);
+          // console.log("DROPPING TASK OVER COLUMN", { activeIndex });
 
-        if (
-          columns &&
-          typeof originalPos === "number" &&
-          typeof newPos === "number"
-        ) {
-          return arrayMove(columns, originalPos, newPos);
-        } else {
-          return columns;
+          return newCards;
         }
       });
     }
   };
 
+  const handleDragEnd = async (event: DragEndEvent) => {
+    setActiveColumn(null);
+
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    if (active.data.current?.type === "card") {
+      try {
+        const columnId = over.data.current?.card.columnId;
+        const result = await updateCard({
+          variables: {
+            columnId: columnId,
+            id: activeCard?.id,
+          },
+        });
+        const id = result.data?.updateCard?.id;
+
+        if (id) {
+          await publishCard({ variables: { id } });
+        }
+
+        setActiveCard(null);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (activeId === overId) return;
+
+    const isActiveAColumn = active.data.current?.type === "column";
+    if (!isActiveAColumn) return;
+
+    setColumns((columns) => {
+      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+
+      const overColumnIndex = columns.findIndex((col) => col.id === overId);
+
+      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+    });
+  };
+
+  if (loading) {
+    return (
+      <Flex
+        style={{ width: "100%", height: "100%" }}
+        justify='center'
+        align='center'
+      >
+        <LoadingOutlined style={{ fontSize: "5rem" }} />
+      </Flex>
+    );
+  }
+
   return (
     <Flex gap={"1.75rem"} className={styles.boardContent}>
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+      <DndContext
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+      >
         <SortableContext items={columns?.map((column) => column.id) || []}>
           {columns?.map((column) => (
             <BoardContentColumn
@@ -136,172 +209,37 @@ const BoardContent = () => {
               key={column.title}
               title={column.title}
               emoji={column.emoji}
-              cards={column.cards}
+              cards={cards?.filter((card) => card.columnId === column.id) || []}
             />
           ))}
         </SortableContext>
+        <DragOverlay>
+          {activeColumn && (
+            <BoardContentColumn
+              id={activeColumn.id}
+              key={activeColumn.title}
+              title={activeColumn.title}
+              emoji={activeColumn.emoji}
+              cards={
+                cards?.filter((card) => card.columnId === activeColumn.id) || []
+              }
+            />
+          )}
+          {activeCard && (
+            <BoardContentCard
+              id={activeCard.id}
+              key={activeCard.id}
+              title={activeCard.title}
+              description={activeCard.description}
+              avatars={activeCard.avatars}
+              labels={activeCard.labels}
+              columnId={activeCard.columnId}
+            />
+          )}
+        </DragOverlay>
       </DndContext>
     </Flex>
   );
 };
 
 export default BoardContent;
-
-// const handleDragStart = (event: DragStartEvent) => {
-//   const { active } = event;
-//   const { id } = active;
-//   setActiveId(id);
-// };
-
-// const handleDragMove = (event: DragMoveEvent) => {
-//   const { active, over } = event;
-
-//   if (
-//     active.id.toString().includes("card") &&
-//     over?.id.toString().includes("card") &&
-//     active &&
-//     over &&
-//     over.id !== active.id
-//   ) {
-//     const activeColumn = findValueOfItems(active.id, "container");
-//     const overColumn = findValueOfItems(over.id, "container");
-
-//     if (!activeColumn && !overColumn) {
-//       return;
-//     }
-//     const activeColumnIndex = columns?.findIndex(
-//       (column) => column.id === activeColumn?.id
-//     );
-//     const overColumnIndex = columns?.findIndex(
-//       (column) => column.id === overColumn?.id
-//     );
-
-//     const activeCardIndex = activeColumn?.cards.findIndex(
-//       (card) => card.id === active.id
-//     );
-//     const overCardIndex = overColumn?.cards.findIndex(
-//       (card) => card.id === over.id
-//     );
-
-//     if (
-//       boardContentList &&
-//       activeCardIndex &&
-//       activeColumnIndex &&
-//       overColumnIndex &&
-//       overCardIndex
-//     ) {
-//       if (activeColumnIndex === overColumnIndex) {
-//         let newCards = [...boardContentList];
-//         newCards[activeCardIndex].cards = arrayMove(
-//           newCards[activeColumnIndex].cards,
-//           activeColumnIndex,
-//           overColumnIndex
-//         );
-//         setColumns(newCards);
-//       } else {
-//         let newCards = [...boardContentList];
-//         const [removedCard] = newCards[activeColumnIndex].cards.splice(
-//           activeCardIndex,
-//           1
-//         );
-//         newCards[overColumnIndex].cards.splice(overCardIndex, 0, removedCard);
-//         setColumns(newCards);
-//       }
-//     }
-//   }
-// };
-// const handleDragEnd = (event: DragEndEvent) => {
-//   const { active, over } = event;
-
-//   if (
-//     active.id.toString().includes("column") &&
-//     over?.id.toString().includes("column") &&
-//     active &&
-//     over &&
-//     active.id !== over.id
-//   ) {
-//     const activeContainerIndex =
-//       columns?.findIndex((container) => container.id === active.id) || 0;
-//     const overContainerIndex =
-//       columns?.findIndex((container) => container.id === over.id) || 0;
-//     let newItems = [...(columns || [])];
-//     newItems = arrayMove(newItems, activeContainerIndex, overContainerIndex);
-//     setColumns(newItems);
-//   }
-
-//   if (
-//     active.id.toString().includes("card") &&
-//     over?.id.toString().includes("card") &&
-//     active &&
-//     over &&
-//     active.id !== over.id
-//   ) {
-//     const activeContainer = findValueOfItems(active.id, "card");
-//     const overContainer = findValueOfItems(over.id, "card");
-
-//     if (!activeContainer || !overContainer) return;
-//     const activeContainerIndex =
-//       columns?.findIndex(
-//         (container) => container.id === activeContainer.id
-//       ) || 0;
-//     const overContainerIndex =
-//       columns?.findIndex((container) => container.id === overContainer.id) ||
-//       0;
-//     const activeitemIndex =
-//       activeContainer.cards.findIndex((item) => item.id === active.id) || 0;
-//     const overitemIndex =
-//       overContainer.cards.findIndex((item) => item.id === over.id) || 0;
-
-//     if (activeContainerIndex === overContainerIndex) {
-//       let newItems = [...(columns || [])];
-//       newItems[activeContainerIndex].cards = arrayMove(
-//         newItems[activeContainerIndex].cards,
-//         activeitemIndex,
-//         overitemIndex
-//       );
-//       setColumns(newItems);
-//     } else {
-//       let newItems = [...(columns || [])];
-//       const [removeditem] = newItems[activeContainerIndex].cards.splice(
-//         activeitemIndex,
-//         1
-//       );
-//       newItems[overContainerIndex].cards.splice(
-//         overitemIndex,
-//         0,
-//         removeditem
-//       );
-//       setColumns(newItems);
-//     }
-//   }
-//   if (
-//     active.id.toString().includes("card") &&
-//     over?.id.toString().includes("column") &&
-//     active &&
-//     over &&
-//     active.id !== over.id
-//   ) {
-//     const activeContainer = findValueOfItems(active.id, "card");
-//     const overContainer = findValueOfItems(over.id, "column");
-
-//     if (!activeContainer || !overContainer) return;
-//     const activeContainerIndex =
-//       columns?.findIndex(
-//         (container) => container.id === activeContainer.id
-//       ) || 0;
-//     const overContainerIndex =
-//       columns?.findIndex((container) => container.id === overContainer.id) ||
-//       0;
-//     const activeitemIndex =
-//       activeContainer.cards.findIndex((item) => item.id === active.id) || 0;
-
-//     let newItems = [...(columns || [])];
-//     const [removeditem] = newItems[activeContainerIndex].cards.splice(
-//       activeitemIndex,
-//       1
-//     );
-//     newItems[overContainerIndex].cards.push(removeditem);
-//     setColumns(newItems);
-//   }
-//   setActiveId(null);
-// };

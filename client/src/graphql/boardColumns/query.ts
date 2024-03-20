@@ -10,7 +10,7 @@ export const GET_ALL_BOARD_COLUMNS = gql`
         id
         description
         labels
-        parentSection
+        columnId
         title
         avatars
       }

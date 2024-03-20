@@ -1,20 +1,20 @@
 import { gql } from "@apollo/client";
 
 export const ADD_BOARD_CARD = gql`
-  mutation AddBoardCard(
+  mutation CreateBoardCard(
     $title: String!
     $description: String!
-    $parentSection: String!
+    $columnId: String!
     $avatars: Json
     $labels: Json
   ) {
-    createBoardCard(
+    createCard(
       data: {
         title: $title
         avatars: $avatars
         description: $description
         labels: $labels
-        parentSection: $parentSection
+        columnId: $columnId
       }
     ) {
       id
@@ -24,7 +24,7 @@ export const ADD_BOARD_CARD = gql`
 
 export const PUBLISH_BOARD_CARD = gql`
   mutation PublishBoardCard($id: ID!) {
-    publishBoardCard(where: { id: $id }) {
+    publishCard(where: { id: $id }) {
       id
     }
   }
@@ -32,7 +32,15 @@ export const PUBLISH_BOARD_CARD = gql`
 
 export const DELETE_BOARD_CARD = gql`
   mutation DeleteBoardCard($id: ID!) {
-    deleteBoardCard(where: { id: $id }) {
+    deleteCard(where: { id: $id }) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_BOARD_CARD = gql`
+  mutation UpdateCard($columnId: String!, $id: ID!) {
+    updateCard(data: { columnId: $columnId }, where: { id: $id }) {
       id
     }
   }

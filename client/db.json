@@ -6,12 +6,8 @@
       "name": "asd",
       "surname": "asd",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin",
-        "user",
-        "manager"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin", "user", "manager"],
       "key": "044acce1-c425-4d0a-85f5-77b75d17cb3e"
     },
     {
@@ -20,10 +16,8 @@
       "name": "sdasdasd",
       "surname": "dasdasd",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin"],
       "key": "d761631a-d2ae-405c-bb6a-08eda1951088"
     },
     {
@@ -32,10 +26,8 @@
       "name": "zxczxc",
       "surname": "zxcqwe",
       "email": "zxczx@zxcz.zxczx",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "user"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["user"],
       "key": "e73aaf94-1200-4a8d-8488-1a00a24553d0"
     },
     {
@@ -44,10 +36,8 @@
       "name": "qweqweqwe",
       "surname": "qweqwezxczx",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1704142800000,
-      "roles": [
-        "manager"
-      ],
+      "birthday": 1704142800000,
+      "roles": ["manager"],
       "key": "542ddca1-4a52-483c-8540-8e2c48af8e69"
     },
     {
@@ -56,12 +46,8 @@
       "name": "пьпртпр",
       "surname": "рапрапр",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin",
-        "user",
-        "manager"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin", "user", "manager"],
       "key": "4841e914-7cb0-4fd7-9fc9-61f480ca4920"
     },
     {
@@ -70,12 +56,8 @@
       "name": "нгшнгшнгшнг",
       "surname": "гшнгшнгшнгн",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin",
-        "user",
-        "manager"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin", "user", "manager"],
       "key": "222e7931-802d-4b72-b995-f3575a0d7a91"
     },
     {
@@ -84,12 +66,8 @@
       "name": "пьпртпр",
       "surname": "рапрапр",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin",
-        "user",
-        "manager"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin", "user", "manager"],
       "key": "2f390b6a-1783-4ad0-832c-5a48b3ce7cd5"
     },
     {
@@ -98,12 +76,8 @@
       "name": "пьпртпр",
       "surname": "рапрапр",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin",
-        "user",
-        "manager"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin", "user", "manager"],
       "key": "c356f573-5ab1-481c-9c5a-b24c6c36c467"
     },
     {
@@ -112,12 +86,8 @@
       "name": "пьпртпр",
       "surname": "рапрапр",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin",
-        "user",
-        "manager"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin", "user", "manager"],
       "key": "db178f69-e8c6-4b95-a2a1-5ec508f11016"
     },
     {
@@ -126,12 +96,8 @@
       "name": "пьпртпр",
       "surname": "рапрапр",
       "email": "asd@asd.dfg",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "admin",
-        "user",
-        "manager"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["admin", "user", "manager"],
       "key": "22ab8fa0-84cb-4a89-b33c-d46f009b751d"
     },
     {
@@ -140,11 +106,29 @@
       "name": "AAAA",
       "surname": "AAAA",
       "email": "AAAAAAAAAAAAAA@AAAAA.AAA",
-      "dateOfBirth": 1709240400000,
-      "roles": [
-        "user"
-      ],
+      "birthday": 1709240400000,
+      "roles": ["user"],
       "key": "1fdd20d5-7d58-40f9-bc10-02b62f3917d9"
+    },
+    {
+      "id": "614f4b64-f163-48e8-8d81-45d753b2cdac",
+      "phone": "+79528896241",
+      "name": "asdasd",
+      "surname": "asdasd",
+      "email": "asd@asd.dfg",
+      "birthday": -2206319417000,
+      "roles": ["admin"],
+      "key": "8d333b28-aa22-4078-9b3a-4f5be1afb015"
+    },
+    {
+      "id": "fa6b0b08-9219-4d66-8f1b-608a2cf6afd5",
+      "phone": "+71231231231",
+      "name": "a",
+      "surname": "a",
+      "email": "tryrty@ssdfs.asd",
+      "birthday": 1704056400000,
+      "roles": ["admin"],
+      "key": "064c29a7-b170-4202-be04-5db6373136cf"
     }
   ]
 }

@@ -1,17 +1,17 @@
-import { UniqueIdentifier } from "@dnd-kit/core";
+type TId = string | number;
 
-export interface IBoardContentSectionCard {
-  id: string;
+export interface IBoardContentColumnCard {
+  id: TId;
   title: string;
   description: string;
-  parentSection: string;
+  columnId: TId;
   avatars: string[];
   labels: string[];
 }
 
-export interface IBoardContentList {
-  id: UniqueIdentifier;
+export interface IBoardContentColumn {
+  id: TId;
   title: string;
   emoji: string;
-  cards: IBoardContentSectionCard[];
+  cards: IBoardContentColumnCard[];
 }

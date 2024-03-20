@@ -75,7 +75,7 @@ const TableContent = () => {
     page: page,
   });
 
-  // ASK Как сделать фильтарцию. Почему не работает сортировтка по dateOfBirth
+  // ASK Как сделать фильтарцию. Почему не работает сортировтка по birthday
 
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
@@ -118,17 +118,13 @@ const TableContent = () => {
     },
     {
       title: (
-        <TableContentTitle
-          title='Date of Birth'
-          sort={sort}
-          setSort={setSort}
-        />
+        <TableContentTitle title='Birthday' sort={sort} setSort={setSort} />
       ),
-      dataIndex: "dateOfBirth",
-      key: "dateOfBirth",
+      dataIndex: "birthday",
+      key: "birthday",
 
-      render: (_, { dateOfBirth }) => {
-        return dayjs(dateOfBirth).format("DD.MM.YYYY");
+      render: (_, { birthday }) => {
+        return dayjs(birthday).format("DD.MM.YYYY");
       },
     },
     {

@@ -7,7 +7,11 @@ import {
 import { DatePicker, Input, Select, SelectProps, Typography } from "antd";
 import dayjs from "dayjs";
 
-import { ControllersName, IController, IUser } from "../../../types/UsersTable";
+import {
+  ControllersName,
+  IController,
+  IUser,
+} from "../../../../types/UsersTable";
 
 const options: SelectProps["options"] = [
   {

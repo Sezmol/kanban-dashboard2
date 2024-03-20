@@ -18,6 +18,8 @@ const TableContentTitle = ({
 }: TableContentTitleProps) => {
   const titleLC = title.toLowerCase().replaceAll(" ", "");
 
+  console.log("titleLC", titleLC, "title", title, "sort", sort);
+
   return (
     <Flex justify='space-between'>
       {title}

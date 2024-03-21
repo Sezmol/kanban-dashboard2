@@ -8,7 +8,49 @@ const io = new Server(server, {
   cors: { origin: "*", methods: ["GET", "POST"] },
 });
 
-const data = [
+const barChartData = [
+  {
+    x: 103,
+  },
+  {
+    x: 76,
+  },
+  {
+    x: 76,
+  },
+  {
+    x: 0,
+  },
+  {
+    x: 0,
+  },
+  {
+    x: 0,
+  },
+  {
+    x: 0,
+  },
+  {
+    x: 33,
+  },
+  {
+    x: 33,
+  },
+  {
+    x: 0,
+  },
+  {
+    x: 0,
+  },
+  {
+    x: 103,
+  },
+  {
+    x: 87,
+  },
+];
+
+const lineChartData = [
   {
     x: 0,
   },
@@ -28,21 +70,32 @@ const data = [
     x: 100,
   },
 ];
+const data = { barChartData, lineChartData };
 
-io.on("connection", (socket) => {
-  let isInterval = true;
-
-  if (data.length > 7) {
-    data.shift();
+const addNewData = (chartData, maxLength) => {
+  if (chartData.length >= maxLength) {
+    chartData.shift();
   }
 
-  data.push({ x: Math.random() * 100 });
+  const newData = chartData[0].hasOwnProperty("name")
+    ? { name: chartData.length, value: Math.ceil(Math.random() * 100) }
+    : { x: Math.ceil(Math.random() * 100) };
+  chartData.push(newData);
+};
 
-  const interval = setInterval(() => {
-    socket.emit("message", data);
-  }, 3000);
+io.on("connection", (socket) => {
+  socket.emit("charts-data", data);
 
-  if (!isInterval) clearInterval(interval);
+  const intervalId = setInterval(() => {
+    addNewData(barChartData, 13);
+    addNewData(lineChartData, 6);
+
+    socket.emit("charts-data", data);
+  }, 5000);
+
+  socket.on("disconnect", () => {
+    clearInterval(intervalId);
+  });
 });
 
 const PORT = process.env.PORT || 8000;

@@ -6,25 +6,22 @@ import { Flex } from "antd";
 
 interface TableContentTitleProps {
   title: string;
-
+  sortBy: string;
   setSort: (sortBy: string) => void;
-  sort: string;
 }
 
 const TableContentTitle = ({
   title,
+  sortBy,
   setSort,
-  sort,
 }: TableContentTitleProps) => {
   const titleLC = title.toLowerCase().replaceAll(" ", "");
-
-  console.log("titleLC", titleLC, "title", title, "sort", sort);
 
   return (
     <Flex justify='space-between'>
       {title}
       <a>
-        {sort === titleLC ? (
+        {sortBy === titleLC ? (
           <SortDescendingOutlined onClick={() => setSort(`-${titleLC}`)} />
         ) : (
           <SortAscendingOutlined onClick={() => setSort(`${titleLC}`)} />

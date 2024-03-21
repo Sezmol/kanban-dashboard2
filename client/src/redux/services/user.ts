@@ -6,6 +6,7 @@ const BASE_URL = "http://localhost:5000";
 interface queryParams {
   sortBy?: string;
   page?: number;
+  filterRoles?: string;
 }
 
 interface pageData {
@@ -24,7 +25,8 @@ export const usersApi = createApi({
   tagTypes: ["User"],
   endpoints: (builder) => ({
     getAllUsers: builder.query<pageData, queryParams>({
-      query: ({ sortBy, page }) => `/table/?_sort=${sortBy}&_page=${page}`,
+      query: ({ sortBy, page, filterRoles }) =>
+        `/table/?roles=${filterRoles}&_sort=${sortBy}&_page=${page}`,
       providesTags: ["User"],
     }),
     createUser: builder.mutation<IUser, IUser>({

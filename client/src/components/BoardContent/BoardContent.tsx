@@ -55,7 +55,7 @@ interface ICardsData {
 const BoardContent = () => {
   const { data: cardsData, loading } =
     useQuery<ICardsData>(GET_ALL_BOARD_CARDS);
-  const [updateCard, { loading: isUpdating }] = useMutation(UPDATE_BOARD_CARD);
+  const [updateCard] = useMutation(UPDATE_BOARD_CARD);
   const [publishCard] = useMutation(PUBLISH_BOARD_CARD);
   const [columns, setColumns] = useState(boardContentList);
   const [cards, setCards] = useState<IBoardContentColumnCard[]>();
@@ -91,12 +91,12 @@ const BoardContent = () => {
 
     if (activeId === overId) return;
 
-    const isActiveATask = active.data.current?.type === "card";
-    const isOverATask = over.data.current?.type === "card";
+    const isActiveACard = active.data.current?.type === "card";
+    const isOverACard = over.data.current?.type === "card";
 
-    if (!isActiveATask) return;
+    if (!isActiveACard) return;
 
-    if (isActiveATask && isOverATask) {
+    if (isActiveACard && isOverACard) {
       setCards((cards) => {
         if (cards) {
           const newCards = [...cards];
@@ -121,7 +121,7 @@ const BoardContent = () => {
 
     const isOverAColumn = over.data.current?.type === "column";
 
-    if (isActiveATask && isOverAColumn) {
+    if (isActiveACard && isOverAColumn) {
       setCards((cards) => {
         if (cards) {
           const newCards = [...cards];
@@ -172,10 +172,23 @@ const BoardContent = () => {
     if (activeId === overId) return;
 
     const isActiveAColumn = active.data.current?.type === "column";
+
     if (!isActiveAColumn) return;
 
     setColumns((columns) => {
+      // console.log(active, over);
       const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+
+      if (over.data.current?.type === "card") {
+        if (cards) {
+          const overCardIndex = cards.findIndex((card) => card.id === overId);
+          const parentColumnId = cards[overCardIndex].columnId;
+          const overColumnIndex = columns.findIndex(
+            (col) => col.id === parentColumnId
+          );
+          return arrayMove(columns, activeColumnIndex, overColumnIndex);
+        }
+      }
 
       const overColumnIndex = columns.findIndex((col) => col.id === overId);
 

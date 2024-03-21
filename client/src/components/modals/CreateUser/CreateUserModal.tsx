@@ -108,7 +108,6 @@ const defaultValues = {
   name: "",
   surname: "",
   email: "",
-  birthday: 0,
   roles: [],
 };
 
@@ -134,8 +133,8 @@ const CreateUserModal = ({
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
 
   const closeModal = () => {
-    reset(defaultValues);
     handleCloseModal();
+    reset(defaultValues);
   };
 
   const onSubmit: SubmitHandler<IUser> = (data) => {
@@ -165,7 +164,7 @@ const CreateUserModal = ({
       onCancel={closeModal}
       open={isVisible}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onFinish={handleSubmit(onSubmit)}>
         <Space direction='vertical' size='middle' style={{ width: "100%" }}>
           {controllers.map((controller) => (
             <FormItem
@@ -184,7 +183,7 @@ const CreateUserModal = ({
             isUpdating={isUpdating}
           />
         </Space>
-      </form>
+      </Form>
     </Modal>
   );
 };

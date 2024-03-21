@@ -1,101 +1,13 @@
-import { useEffect, useState } from "react";
-import { Card, Flex, Typography } from "antd";
+import { Card, Flex, Progress, Typography } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
-import { Bar, BarChart, Cell, Line, LineChart, Pie, PieChart } from "recharts";
-import { io } from "socket.io-client";
+import { Bar, BarChart, Line, LineChart, Tooltip } from "recharts";
+import useSocketData from "../../hooks/useSocketData";
 
 import styles from "./Analytics.module.scss";
-import useSocketData from "../../websocket/useSocketData";
-
-const lineChartData = [
-  {
-    x: 0,
-  },
-  {
-    x: 60,
-  },
-  {
-    x: 20,
-  },
-  {
-    x: 50,
-  },
-  {
-    x: 0,
-  },
-  {
-    x: 100,
-  },
-];
-
-const barChartData = [
-  {
-    uv: 103,
-    amt: 103,
-  },
-  {
-    uv: 76,
-    amt: 103,
-  },
-  {
-    uv: 76,
-    amt: 103,
-  },
-  {
-    uv: 0,
-    amt: 103,
-  },
-  {
-    uv: 0,
-    amt: 103,
-  },
-  {
-    uv: 0,
-    amt: 103,
-  },
-  {
-    uv: 0,
-    amt: 103,
-  },
-  {
-    uv: 33,
-    amt: 103,
-  },
-  {
-    uv: 33,
-    amt: 103,
-  },
-  {
-    uv: 0,
-    amt: 103,
-  },
-  {
-    uv: 0,
-    amt: 103,
-  },
-  {
-    uv: 103,
-    amt: 103,
-  },
-  {
-    uv: 87,
-    amt: 103,
-  },
-];
-
-const pieChartData = [
-  { name: "Group A", value: 15 },
-  { name: "Group B", value: 43 },
-  { name: "Group C", value: 43 },
-];
-
-const COLORS = ["#B6EDFF", "#FFF2AB", "#B2BFFA"];
-
-const socket = io("http://localhost:8000");
 
 const Analytics = () => {
-  const analyticsData = useSocketData("message");
+  const data = useSocketData("charts-data");
 
   return (
     <Flex className={styles.analytics} vertical gap={12}>
@@ -104,9 +16,13 @@ const Analytics = () => {
         <Title className={styles.cardTitle} level={5}>
           TOTAL TIME
         </Title>
-        <Paragraph style={{ fontSize: 24, fontWeight: 500 }}>2d 3h</Paragraph>
+        <Paragraph style={{ fontSize: 24, fontWeight: 600 }}>2d 3h</Paragraph>
         <Flex>
-          <LineChart width={88} height={38} data={analyticsData}>
+          <LineChart width={88} height={38} data={data?.lineChartData}>
+            <Tooltip
+              contentStyle={{ fontSize: 8 }}
+              wrapperStyle={{ width: 40, height: 10 }}
+            />
             <Line type='linear' dataKey='x' stroke='#60BF9D' />
           </LineChart>
 
@@ -122,8 +38,9 @@ const Analytics = () => {
         <Title className={styles.cardTitle} level={5}>
           COMMITS
         </Title>
-        <BarChart width={137} height={103} data={barChartData}>
-          <Bar legendType='square' dataKey='uv' fill='#8884d8' />
+        <BarChart width={137} height={103} data={data?.barChartData}>
+          <Tooltip />
+          <Bar legendType='square' dataKey='x' fill='#8884d8' />
         </BarChart>
       </Card>
       <Card className={styles.card}>
@@ -131,19 +48,13 @@ const Analytics = () => {
           TIME
         </Title>
 
-        <PieChart width={145} height={145}>
-          <Pie
-            dataKey='value'
-            data={pieChartData}
-            innerRadius={60}
-            outerRadius={70}
-            fill='#82ca9d'
-          >
-            {pieChartData.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index]} />
-            ))}
-          </Pie>
-        </PieChart>
+        <Progress
+          strokeColor={["#B2BFFA", "#B2BFFA"]}
+          trailColor='#B6EDFF'
+          style={{ marginTop: 10 }}
+          percent={68}
+          type='circle'
+        />
       </Card>
     </Flex>
   );

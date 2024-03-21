@@ -18,6 +18,11 @@ import {
   useDeleteUserMutation,
   useGetAllUsersQuery,
 } from "../../redux/services/user";
+import {
+  FilterValue,
+  SorterResult,
+  TablePaginationConfig,
+} from "antd/es/table/interface";
 
 interface initialStateType {
   isModalVisible: boolean;
@@ -68,14 +73,14 @@ const reducer = (state = initialState, action: IAction) => {
 const TableContent = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { rowData, isModalVisible } = state;
-  const [sort, setSort] = useState("name");
+  const [sortBy, setSort] = useState("");
+  const [filterRoles, setFilterRoles] = useState("");
   const [page, setPage] = useState(1);
   const { data, isLoading } = useGetAllUsersQuery({
-    sortBy: sort,
+    sortBy: sortBy,
     page: page,
+    filterRoles: filterRoles,
   });
-
-  // ASK Как сделать фильтарцию. Почему не работает сортировтка по birthday
 
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
@@ -95,6 +100,19 @@ const TableContent = () => {
     dispatch({ type: ActionTypes.OPEN_MODAL });
   };
 
+  const handleChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<IUser> | SorterResult<IUser>[]
+  ) => {
+    if (filters.roles) {
+      setFilterRoles(`${filters.roles[0]}`);
+    }
+    if (!filters.roles) {
+      setFilterRoles("");
+    }
+  };
+
   if (isLoading) {
     return (
       <Flex justify='center' align='center'>
@@ -105,20 +123,22 @@ const TableContent = () => {
 
   const columns: TableProps<IUser>["columns"] = [
     {
-      title: <TableContentTitle title='Name' sort={sort} setSort={setSort} />,
+      title: (
+        <TableContentTitle title='Name' sortBy={sortBy} setSort={setSort} />
+      ),
       dataIndex: "name",
       key: "name",
     },
     {
       title: (
-        <TableContentTitle title='Surname' sort={sort} setSort={setSort} />
+        <TableContentTitle title='Surname' sortBy={sortBy} setSort={setSort} />
       ),
       dataIndex: "surname",
       key: "surname",
     },
     {
       title: (
-        <TableContentTitle title='Birthday' sort={sort} setSort={setSort} />
+        <TableContentTitle title='Birthday' sortBy={sortBy} setSort={setSort} />
       ),
       dataIndex: "birthday",
       key: "birthday",
@@ -128,12 +148,16 @@ const TableContent = () => {
       },
     },
     {
-      title: <TableContentTitle title='Email' sort={sort} setSort={setSort} />,
+      title: (
+        <TableContentTitle title='Email' sortBy={sortBy} setSort={setSort} />
+      ),
       dataIndex: "email",
       key: "email",
     },
     {
-      title: <TableContentTitle title='Phone' sort={sort} setSort={setSort} />,
+      title: (
+        <TableContentTitle title='Phone' sortBy={sortBy} setSort={setSort} />
+      ),
       dataIndex: "phone",
       key: "phone",
     },
@@ -155,7 +179,7 @@ const TableContent = () => {
           value: "admin",
         },
       ],
-      onFilter: (value, record) => record.roles.includes(`${value}`),
+
       render: (_, { roles }) => (
         <>
           {roles.map((role) => {
@@ -207,6 +231,7 @@ const TableContent = () => {
     <>
       <Table
         style={{ padding: "0.5rem 1rem" }}
+        onChange={handleChange}
         columns={columns}
         dataSource={data?.data}
         pagination={false}

@@ -1,12 +1,10 @@
 import Sider from "antd/es/layout/Sider";
 import Title from "antd/es/typography/Title";
-import { Avatar, Menu, MenuProps, Typography } from "antd";
-import { MenuItemType } from "antd/es/menu/hooks/useItems";
-
+import { Menu, MenuProps } from "antd";
 import Analytics from "../Analytics/Analytics";
+import SideBarItem from "./SideBarItem/SideBarItem";
 
 import styles from "./SideBar.module.scss";
-import SideBarItem from "./SideBarItem/SideBarItem";
 
 const menuItems: MenuProps["items"] = [
   {
@@ -49,10 +47,3 @@ const SideBar = () => {
 };
 
 export default SideBar;
-
-// {projectsList.map((project) => (
-//   <Menu.Item className={styles.projectItem} key={project.key}>
-//     <Avatar className={styles.avatar} src={project.icon} />
-//     <Typography.Text>{project.title}</Typography.Text>
-//   </Menu.Item>
-// ))}

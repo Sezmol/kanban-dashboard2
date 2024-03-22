@@ -17,7 +17,12 @@ export const ADD_BOARD_CARD = gql`
         columnId: $columnId
       }
     ) {
+      avatars
+      columnId
+      description
+      labels
       id
+      title
     }
   }
 `;

@@ -15,6 +15,7 @@ import BoardContentColumn from "./Column/BoardContentColumn";
 import {
   IBoardContentColumn,
   IBoardContentColumnCard,
+  ICardsData,
 } from "../../types/BoardContent";
 import { GET_ALL_BOARD_CARDS } from "../../graphql/boardCards/query";
 import BoardContentCard from "./Card/BoardContentCard";
@@ -48,10 +49,6 @@ const boardContentList = [
   },
 ];
 
-interface ICardsData {
-  cards: IBoardContentColumnCard[];
-}
-
 const BoardContent = () => {
   const { data: cardsData, loading } =
     useQuery<ICardsData>(GET_ALL_BOARD_CARDS);
@@ -75,125 +72,97 @@ const BoardContent = () => {
   const handleDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === "column") {
       setActiveColumn(event.active.data.current.column);
+      setActiveCard(null);
     }
 
     if (event.active.data.current?.type === "card") {
+      setActiveColumn(null);
       setActiveCard(event.active.data.current.card);
     }
   };
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
-    if (!over) return;
+    if (!over || over.id === active.id) return;
 
-    const activeId = active.id;
-    const overId = over.id;
+    const activeType = active.data.current?.type;
+    const overType = over.data.current?.type;
 
-    if (activeId === overId) return;
+    if (activeType === "column") {
+      setColumns((columns) => {
+        const activeColumnIndex = columns.findIndex(
+          (col) => col.id === active.id
+        );
+        let targetIndex;
 
-    const isActiveACard = active.data.current?.type === "card";
-    const isOverACard = over.data.current?.type === "card";
-
-    if (!isActiveACard) return;
-
-    if (isActiveACard && isOverACard) {
-      setCards((cards) => {
-        if (cards) {
-          const newCards = [...cards];
-          const activeIndex = cards.findIndex((t) => t.id === activeId);
-          const overIndex = cards.findIndex((t) => t.id === overId);
-
-          if (cards[activeIndex].columnId !== cards[overIndex].columnId) {
-            // console.log("DROPPING TASK OVER CARD", { active, over });
-            const updatedCard = {
-              ...cards[activeIndex],
-              columnId: cards[overIndex].columnId,
-            };
-
-            newCards[activeIndex] = updatedCard;
-            return arrayMove(newCards, activeIndex, overIndex - 1);
-          }
-
-          return arrayMove(newCards, activeIndex, overIndex);
+        if (overType === "card" && cards) {
+          const parentColumnId = cards.find(
+            (card) => card.id === over.id
+          )?.columnId;
+          targetIndex = columns.findIndex((col) => col.id === parentColumnId);
+        } else {
+          targetIndex = columns.findIndex((col) => col.id === over.id);
         }
+
+        return arrayMove(columns, activeColumnIndex, targetIndex);
       });
     }
 
-    const isOverAColumn = over.data.current?.type === "column";
-
-    if (isActiveACard && isOverAColumn) {
+    if (activeType === "card") {
       setCards((cards) => {
-        if (cards) {
+        if (!cards) return;
+
+        const activeIndex = cards.findIndex((card) => card.id === active.id);
+
+        if (overType === "column") {
           const newCards = [...cards];
-          const activeIndex = newCards.findIndex((t) => t.id === activeId);
-
-          const updatedCard = { ...newCards[activeIndex], columnId: overId };
-
-          newCards[activeIndex] = updatedCard;
-
-          // console.log("DROPPING TASK OVER COLUMN", { activeIndex });
-
+          newCards[activeIndex] = {
+            ...cards[activeIndex],
+            columnId: over.id,
+          };
           return newCards;
+        } else if (overType === "card") {
+          const overIndex = cards.findIndex((card) => card.id === over.id);
+
+          if (cards[activeIndex].columnId !== cards[overIndex].columnId) {
+            const newCards = [...cards];
+
+            newCards[activeIndex] = {
+              ...newCards[activeIndex],
+              columnId: newCards[overIndex].columnId,
+            };
+
+            return newCards;
+          }
+          return arrayMove(cards, activeIndex, overIndex);
         }
       });
     }
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
-    setActiveColumn(null);
-
-    const { active, over } = event;
-    if (!over) return;
-
-    const activeId = active.id;
-    const overId = over.id;
+    const { active } = event;
+    if (!active) return;
 
     if (active.data.current?.type === "card") {
       try {
-        const columnId = over.data.current?.card.columnId;
-        const result = await updateCard({
+        const columnId = active.data.current?.card?.columnId;
+        const restul = await updateCard({
           variables: {
             columnId: columnId,
-            id: activeCard?.id,
+            id: active.id,
           },
         });
-        const id = result.data?.updateCard?.id;
+        const resultId = restul.data?.updateCard?.id;
+        console.log("RESULT", resultId);
 
-        if (id) {
-          await publishCard({ variables: { id } });
+        if (resultId) {
+          await publishCard({ variables: { id: resultId } });
         }
-
-        setActiveCard(null);
       } catch (error) {
         console.error(error);
       }
     }
-
-    if (activeId === overId) return;
-
-    const isActiveAColumn = active.data.current?.type === "column";
-
-    if (!isActiveAColumn) return;
-
-    setColumns((columns) => {
-      // console.log(active, over);
-      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
-
-      if (over.data.current?.type === "card") {
-        if (cards) {
-          const overCardIndex = cards.findIndex((card) => card.id === overId);
-          const parentColumnId = cards[overCardIndex].columnId;
-          const overColumnIndex = columns.findIndex(
-            (col) => col.id === parentColumnId
-          );
-          return arrayMove(columns, activeColumnIndex, overColumnIndex);
-        }
-      }
-
-      const overColumnIndex = columns.findIndex((col) => col.id === overId);
-
-      return arrayMove(columns, activeColumnIndex, overColumnIndex);
-    });
   };
 
   if (loading) {
@@ -212,8 +181,8 @@ const BoardContent = () => {
     <Flex gap={"1.75rem"} className={styles.boardContent}>
       <DndContext
         onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
       >
         <SortableContext items={columns?.map((column) => column.id) || []}>
           {columns?.map((column) => (

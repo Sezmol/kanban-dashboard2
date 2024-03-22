@@ -77,9 +77,9 @@ const TableContent = () => {
   const [filterRoles, setFilterRoles] = useState("");
   const [page, setPage] = useState(1);
   const { data, isLoading } = useGetAllUsersQuery({
-    sortBy: sortBy,
-    page: page,
-    filterRoles: filterRoles,
+    sortBy,
+    page,
+    filterRoles,
   });
 
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();

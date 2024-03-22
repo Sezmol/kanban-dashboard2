@@ -139,11 +139,7 @@ const CreateUserModal = ({
 
   const onSubmit: SubmitHandler<IUser> = (data) => {
     if (rowData) {
-      const updatedUser = {
-        ...rowData,
-        ...data,
-      };
-      updateUser(updatedUser);
+      updateUser(data);
     } else {
       const newUser = {
         ...data,

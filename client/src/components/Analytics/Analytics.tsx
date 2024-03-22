@@ -49,7 +49,7 @@ const Analytics = () => {
         </Title>
 
         <Progress
-          strokeColor={["#B2BFFA", "#B2BFFA"]}
+          strokeColor={"#B2BFFA"}
           trailColor='#B6EDFF'
           style={{ marginTop: 10 }}
           percent={68}

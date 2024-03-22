@@ -2,12 +2,11 @@ import { Avatar, Flex, Card, MenuProps, Button, Dropdown, Tooltip } from "antd";
 import Title from "antd/es/typography/Title";
 import Paragraph from "antd/es/typography/Paragraph";
 import { CSS } from "@dnd-kit/utilities";
-import { useMutation } from "@apollo/client";
+import { useMutation, Reference } from "@apollo/client";
 import { useSortable } from "@dnd-kit/sortable";
 import MenuIcon from "../../../icons/MenuIcon";
 import { IBoardContentColumnCard } from "../../../types/BoardContent";
 import { DELETE_BOARD_CARD } from "../../../graphql/boardCards/mutation";
-import { GET_ALL_BOARD_CARDS } from "../../../graphql/boardCards/query";
 import Label from "./Label/Label";
 
 import styles from "./BoardContentCard.module.scss";
@@ -48,8 +47,23 @@ const BoardContentCard = ({
     transform: CSS.Translate.toString(transform),
   };
 
-  const [deleteTask, { loading }] = useMutation(DELETE_BOARD_CARD, {
-    refetchQueries: [{ query: GET_ALL_BOARD_CARDS }],
+  const [deleteCard, { loading }] = useMutation(DELETE_BOARD_CARD, {
+    update(cache, result) {
+      const deletedCardId = result.data.deleteCard.id;
+
+      cache.modify({
+        fields: {
+          cards(
+            existingCardsRefs: ReadonlyArray<Reference> = [],
+            { readField }
+          ) {
+            return existingCardsRefs.filter(
+              (cardRef) => deletedCardId !== readField("id", cardRef)
+            );
+          },
+        },
+      });
+    },
   });
 
   const items: MenuProps["items"] = [
@@ -58,9 +72,9 @@ const BoardContentCard = ({
         <Button
           type='text'
           loading={loading}
-          onClick={() => deleteTask({ variables: { id } })}
+          onClick={() => deleteCard({ variables: { id } })}
         >
-          {loading ? "Loading..." : "Delete Task"}
+          {loading ? "Deleting..." : "Delete Task"}
         </Button>
       ),
       key: "0",

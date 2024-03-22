@@ -3,12 +3,11 @@
     {
       "id": "dc34cbf9-219a-4444-9ebb-420ef15f294e",
       "phone": "+71111111111",
-      "name": "asd",
-      "surname": "asd",
+      "name": "iopiop",
+      "surname": "iopiop",
       "email": "asd@asd.dfg",
       "birthday": 1709240400000,
       "roles": [
-        "admin",
         "user",
         "manager"
       ],

@@ -12,9 +12,10 @@ const Label = ({ label }: { label: string }) => (
       borderRadius: "10px",
       fontSize: "0.625rem",
       fontWeight: 500,
+      textTransform: "capitalize",
     }}
   >
-    {label[0].toUpperCase() + label.slice(1)}
+    {label}
   </Flex>
 );
 

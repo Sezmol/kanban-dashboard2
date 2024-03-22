@@ -5,6 +5,7 @@ import {
   PUBLISH_BOARD_CARD,
 } from "../../../graphql/boardCards/mutation";
 import { GET_ALL_BOARD_CARDS } from "../../../graphql/boardCards/query";
+import { ICardsData } from "../../../types/BoardContent";
 
 type Inputs = {
   title: string;
@@ -37,14 +38,25 @@ const options: SelectProps["options"] = [
 ];
 
 const AddTaskForm = ({ handleCancel, columnId }: IAddTaskFormProps) => {
-  const [addTask, { loading }] = useMutation(ADD_BOARD_CARD);
+  const [addTask, { loading }] = useMutation(ADD_BOARD_CARD, {
+    update(cache, { data: cardData }) {
+      const cardsData: ICardsData | null = cache.readQuery({
+        query: GET_ALL_BOARD_CARDS,
+      });
 
-  const [publishTask, { loading: isPublishing }] = useMutation(
-    PUBLISH_BOARD_CARD,
-    {
-      refetchQueries: [{ query: GET_ALL_BOARD_CARDS }],
-    }
-  );
+      if (cardsData && cardData) {
+        cache.writeQuery({
+          query: GET_ALL_BOARD_CARDS,
+          data: {
+            cards: [...cardsData.cards, cardData.createCard],
+          },
+        });
+      }
+    },
+  });
+
+  const [publishTask, { loading: isPublishing }] =
+    useMutation(PUBLISH_BOARD_CARD);
 
   const onFinish = async (values: Inputs) => {
     const avatar =
@@ -66,8 +78,8 @@ const AddTaskForm = ({ handleCancel, columnId }: IAddTaskFormProps) => {
 
       const id = result.data?.createCard?.id;
       if (id) {
-        await publishTask({ variables: { id } });
         handleCancel();
+        await publishTask({ variables: { id } });
       }
     } catch (error) {
       console.error(error);
@@ -113,12 +125,21 @@ const AddTaskForm = ({ handleCancel, columnId }: IAddTaskFormProps) => {
           <Input.TextArea placeholder='Task description' />
         </Form.Item>
 
-        <Form.Item name='labels'>
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "At least one label is required",
+            },
+          ]}
+          validateTrigger='onBlur'
+          name='labels'
+        >
           <Select
             mode='multiple'
             allowClear
             placeholder='Please select labels'
-            maxCount={2}
+            maxCount={3}
             options={options}
           />
         </Form.Item>

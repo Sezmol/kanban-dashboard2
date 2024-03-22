@@ -12,16 +12,3 @@ export const GET_ALL_BOARD_CARDS = gql`
     }
   }
 `;
-
-export const GET_BOARD_CARDS = gql`
-  query boardCards($columnId: String!) {
-    boardCards(where: { columnId: $columnId }) {
-      title
-      description
-      avatars
-      labels
-      id
-      columnId
-    }
-  }
-`;

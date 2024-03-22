@@ -1,5 +1,9 @@
 type TId = string | number;
 
+export interface ICardsData {
+  cards: IBoardContentColumnCard[];
+}
+
 export interface IBoardContentColumnCard {
   id: TId;
   title: string;

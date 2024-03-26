@@ -121,7 +121,7 @@ const CreateUserModal = ({
     control,
     reset,
     formState: { errors },
-  } = useForm<IUser>({ defaultValues: defaultValues });
+  } = useForm<IUser>({ defaultValues: defaultValues, mode: "onBlur" });
 
   useEffect(() => {
     if (rowData) {

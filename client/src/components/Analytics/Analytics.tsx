@@ -19,10 +19,7 @@ const Analytics = () => {
         <Paragraph style={{ fontSize: 24, fontWeight: 600 }}>2d 3h</Paragraph>
         <Flex>
           <LineChart width={88} height={38} data={data?.lineChartData}>
-            <Tooltip
-              contentStyle={{ fontSize: 8 }}
-              wrapperStyle={{ width: 40, height: 10 }}
-            />
+            <Tooltip />
             <Line type='linear' dataKey='x' stroke='#60BF9D' />
           </LineChart>
 

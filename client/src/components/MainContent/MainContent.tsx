@@ -1,6 +1,6 @@
 import { Content } from "antd/es/layout/layout";
-import Icons from "../MainHeader/Icons/Icons";
-import Tabs from "../MainHeader/Tabs/Tabs";
+import Tabs from "./Tabs/Tabs";
+import Icons from "./Icons/Icons";
 
 import styles from "./MainContent.module.scss";
 

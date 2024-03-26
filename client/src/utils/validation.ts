@@ -26,4 +26,4 @@ export const emailValidation = new RegExp(
 
 export const phoneValidation = new RegExp(/^((\+7|7|8)+([0-9]){10})$/gm);
 
-export const textValidation = new RegExp(/^[a-zA-Zа-яА-Я\s]+$/gm);
+export const textValidation = new RegExp(/^[a-zA-Zа-яА-Я]+$/gm);

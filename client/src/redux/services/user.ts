@@ -1,15 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser } from "../../types/UsersTable";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = process.env.REACT_APP_USERS_BASE_URL;
 
-interface queryParams {
+interface QueryParams {
   sortBy?: string;
   page?: number;
   filterRoles?: string;
 }
 
-interface pageData {
+interface PageData {
   first: number | null;
   prev: number | null;
   next: number | null;
@@ -24,7 +24,7 @@ export const usersApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
-    getAllUsers: builder.query<pageData, queryParams>({
+    getAllUsers: builder.query<PageData, QueryParams>({
       query: ({ sortBy, page, filterRoles }) =>
         `/table/?roles=${filterRoles}&_sort=${sortBy}&_page=${page}`,
       providesTags: ["User"],

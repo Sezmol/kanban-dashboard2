@@ -2,10 +2,10 @@ import { Button, Flex } from "antd";
 import { IUser } from "../../../../types/UsersTable";
 
 interface FormFooterProps {
-  rowData?: IUser | null;
   closeModal: () => void;
   isLoading?: boolean;
   isUpdating?: boolean;
+  rowData?: IUser | null;
 }
 
 const FormFooter = ({

@@ -84,9 +84,9 @@ const BoardContentCard = ({
   return (
     <Dropdown menu={{ items }} trigger={["contextMenu"]}>
       <Card
+        {...attributes}
         style={style}
         ref={setNodeRef}
-        {...attributes}
         className={styles.card}
       >
         <Flex justify='space-between' align='center'>

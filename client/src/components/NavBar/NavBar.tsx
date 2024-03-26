@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Sider from "antd/es/layout/Sider";
 import { Flex, Menu, MenuProps } from "antd";
+import { MenuItemType } from "antd/es/menu/hooks/useItems";
 
 // Icons
 import Logo from "../../icons/Logo";
@@ -19,7 +20,6 @@ import ChatFilledIcon from "../../icons/Chat/ChatFilledIcon";
 import MoonFilledIcon from "../../icons/Moon/MoonFilledIcon";
 
 import styles from "./NavBar.module.scss";
-import { MenuItemType } from "antd/es/menu/hooks/useItems";
 
 function getItem(
   label: React.ReactNode,

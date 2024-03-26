@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { Badge, Flex } from "antd";
 import Title from "antd/es/typography/Title";
-
-import MenuIcon from "../../../icons/MenuIcon";
-import BoardContentCard from "../Card/BoardContentCard";
-import { IBoardContentColumn } from "../../../types/BoardContent";
-import AddTaskButton from "../AddTaskButton/AddTaskButton";
-import AddTaskForm from "../AddTaskForm/AddTaskForm";
 import {
   SortableContext,
   rectSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
+import MenuIcon from "../../../icons/MenuIcon";
+import BoardContentCard from "../Card/BoardContentCard";
+import { IBoardContentColumn } from "../../../types/BoardContent";
+import AddTaskButton from "../AddTaskButton/AddTaskButton";
+import AddTaskForm from "../AddTaskForm/AddTaskForm";
 
 import styles from "./BoardContentColumn.module.scss";
 

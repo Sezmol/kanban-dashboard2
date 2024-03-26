@@ -77,9 +77,7 @@ const addNewData = (chartData, maxLength) => {
     chartData.shift();
   }
 
-  const newData = chartData[0].hasOwnProperty("name")
-    ? { name: chartData.length, value: Math.ceil(Math.random() * 100) }
-    : { x: Math.ceil(Math.random() * 100) };
+  const newData = { x: Math.ceil(Math.random() * 101) };
   chartData.push(newData);
 };
 

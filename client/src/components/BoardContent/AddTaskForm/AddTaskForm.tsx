@@ -93,7 +93,6 @@ const AddTaskForm = ({ handleCancel, columnId }: IAddTaskFormProps) => {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "0.5rem",
           marginTop: "1rem",
         }}
       >
@@ -104,7 +103,6 @@ const AddTaskForm = ({ handleCancel, columnId }: IAddTaskFormProps) => {
               message: "Please enter a title",
             },
           ]}
-          style={{ margin: 0 }}
           validateTrigger='onBlur'
           name='title'
         >
@@ -118,7 +116,6 @@ const AddTaskForm = ({ handleCancel, columnId }: IAddTaskFormProps) => {
               message: "Please enter a description",
             },
           ]}
-          style={{ margin: 0 }}
           validateTrigger='onBlur'
           name='description'
         >
